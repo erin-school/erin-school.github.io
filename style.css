@@ -115,6 +115,7 @@ a.button:hover, a.button:focus {
   display: inline-block;
   padding: 1em;
   width: auto;
+  padding-top:1.5em;
 }
 .main-logo a.logo {
   display: block;
@@ -803,4 +804,33 @@ a.button:hover, a.button:focus {
   color: #ededed;
   font-size: 12px;
   text-align: center;
+}
+
+#item-wrapper {
+ width:250px;   
+ margin:30px 0 0 30px;
+}
+.items li {
+ font-family:arial;
+font-size:13px;
+ background-color:#ccc;
+margin-bottom:1px; 
+padding:5px;    
+}
+.ctrl-nav {
+    background-color:#999;
+    padding:5px;
+    overflow:hidden;
+}
+.ctrl-nav a {
+    font-family:arial;
+font-size:13px;
+    padding:5px 10px;
+    color:#fff;
+}
+.ctrl-nav a#prev{
+ float:left;   
+}
+.ctrl-nav a#next{
+ float:right;   
 }
