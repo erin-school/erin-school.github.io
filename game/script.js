@@ -126,7 +126,7 @@ var Character = function (name, level, hp, atk, def, luk) {
 // 플레이어 생성자 (exp, job, money)
 var Player = function (name, level, hp, atk, def, luk, exp, job, money, goalExp, vicCount, defCount, state) {
   Character.apply(this, arguments);
-  this.name = "NFT Dungeon_Novice_Female";
+  this.name = "NFT Dungeon_Novice";
   this.exp = exp || 0;
   this.job = job || "Novice";
   this.money = money || 0;
