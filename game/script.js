@@ -114,7 +114,7 @@ var log = function (msg, className) {
 
 // 캐릭터 생성자 
 var Character = function (name, level, hp, atk, def, luk) {
-  this.name = "테스트";
+  this.name = name;
   this.level = level || 1;
   this.hp = hp || ((this.level * ctrl.levUpVal.hp[0]) + (this.level * ctrl.levUpVal.hp[1]));
   this.atk = atk || this.level * ctrl.levUpVal.atk;
@@ -126,8 +126,9 @@ var Character = function (name, level, hp, atk, def, luk) {
 // 플레이어 생성자 (exp, job, money)
 var Player = function (name, level, hp, atk, def, luk, exp, job, money, goalExp, vicCount, defCount, state) {
   Character.apply(this, arguments);
+  this.name = "NFT Dungeon_Novice_Female";
   this.exp = exp || 0;
-  this.job = job || "NFT Dungeon_Novice_Female";
+  this.job = job || "Novice";
   this.money = money || 0;
   this.goalExp = 120;
   this.vicCount = vicCount || 0;
