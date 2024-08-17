@@ -79,7 +79,7 @@ header .logo
   left: 0;
   width: 100%;
   height: 100%;
-  background: #030d6d;
+  background: #0994d4;
   mix-blend-mode: overlay;
 }
 .text
@@ -111,7 +111,7 @@ header .logo
   font-optical-sizing: auto;
   font-weight: <weight>;
   font-style: normal;
-  font-size: 1.1em;
+  font-size: 1.0em;
   color: #fff;
   margin: 20px 0;
   font-weight: 400;
