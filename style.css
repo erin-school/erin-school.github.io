@@ -12,7 +12,7 @@ header
   top: 0;
   left: 0;
   width: 100%;
-  padding: 40px 100px;
+  padding: 15px 100px;
   z-index: 1000;
   display: flex;
   justify-content: space-between;
@@ -79,7 +79,7 @@ header .logo
   left: 0;
   width: 100%;
   height: 100%;
-  background: #0994d4;
+  background: #a50bb3;
   mix-blend-mode: overlay;
 }
 .text
@@ -98,7 +98,7 @@ header .logo
 }
 .text h3
 {
-  font-size: 4em;
+  font-size: 3.5em;
   font-weight: 700;
   color: #fff;
   line-height: 1em;
