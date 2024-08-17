@@ -139,7 +139,7 @@ header .logo
 {
   position: absolute;
   z-index: 10;
-  bottom: 20px;
+  bottom: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
