@@ -91,7 +91,7 @@ header .logo
 .text h2
 {
   font-size: 5em;
-  font-weight: 800;
+  font-weight: 500;
   color: #fff;
   line-height: 1em;
   text-transform: uppercase;
@@ -99,7 +99,7 @@ header .logo
 .text h3
 {
   font-size: 3.5em;
-  font-weight: 700;
+  font-weight: 500;
   color: #fff;
   line-height: 1em;
   text-transform: uppercase;
@@ -114,7 +114,7 @@ header .logo
   font-size: 1.0em;
   color: #fff;
   margin: 20px 0;
-  font-weight: 400;
+  font-weight: 300;
   max-width: 700px;
 }
 .text a
@@ -139,7 +139,7 @@ header .logo
 {
   position: absolute;
   z-index: 10;
-  bottom: 40px;
+  bottom: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -195,7 +195,7 @@ header .logo
   .showcase,
   .showcase header
   {
-    padding: 40px;
+    padding: 20px;
   }
   .text h2
   {
