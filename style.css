@@ -190,7 +190,7 @@ header .logo
   color: #03a9f4; 
 }
 
-@media (max-width: 991px)
+@media (max-width: 890px)
 {
   .showcase,
   .showcase header
