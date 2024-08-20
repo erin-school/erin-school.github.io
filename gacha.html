@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Image Picker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #stats {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .image-item {
+            margin: 5px;
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            background-position: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <img src="./logo.png" width="150px">
+        <div id="stats">
+            <p>총 뽑은 수: <span id="total-drawn">0</span></p>
+            <p>SSR: <span id="special-drawn">0</span></p>
+            <p>소피아: <span id="seven-drawn">0</span></p>
+            <p>확률 (2% 보장X/180천장 있음): <span id="special-probability">0%</span></p>
+            <p>니가 쓴 돈: <span id="cost">0</span> KRW</p>
+        </div>
+        <button onclick="pickImages()">만남 10회</button>
+        * SSR 2% / 2% 중 소피아 50%
+    <div id="image-container"></div>
+
+    <script>
+        let totalDrawn = 0;
+        let specialDrawn = 0;
+        let sevenDrawn = 0;
+        let cost = 0;
+        let sevenImageSeen = false;
+        let totalPicks = 0;
+
+        function pickImages() {
+            const images = [];
+            let specialCount = 0;
+
+            for (let i = 0; i < 10; i++) {
+                let image;
+
+                if (totalPicks >= 170 && !sevenImageSeen) {
+                    // 170번째까지 7번 이미지가 나오지 않았다면, 반드시 포함
+                    image = {
+                        url: 'images/7.png',
+                        isSpecial: true
+                    };
+                    sevenImageSeen = true;
+                } else if (Math.random() < 0.02) { // 2% 확률로 1~40번 이미지 선택
+                    image = pickSpecialImage();
+                } else { // 98% 확률로 41~142번 이미지 선택
+                    image = pickGeneralImage();
+                }
+
+                images.push(image);
+                if (image.isSpecial) {
+                    specialCount++;
+                }
+                if (image.url.includes('images/7.png')) {
+                    sevenDrawn++;
+                    sevenImageSeen = true;
+                }
+            }
+
+            specialDrawn += specialCount;
+            totalDrawn += 10;
+            cost += 30000;
+            totalPicks += 10; // 총 뽑은 이미지 수 증가
+
+            displayImages(images);
+            updateStats();
+        }
+
+        function pickSpecialImage() {
+            let imageNumber;
+            if (Math.random() < 0.5) { // 50% 확률로 7번 이미지
+                imageNumber = 7;
+            } else {
+                imageNumber = Math.floor(Math.random() * 39) + 1; // 1~40번 중 다른 이미지 선택
+                if (imageNumber >= 7) imageNumber += 1; // 7번을 건너뛰도록 설정
+            }
+
+            return {
+                url: `images/${imageNumber}.png`,
+                isSpecial: true
+            };
+        }
+
+        function pickGeneralImage() {
+            const imageNumber = Math.floor(Math.random() * 102) + 41; // 41~142번 이미지 중 하나
+            return {
+                url: `images/${imageNumber}.png`,
+                isSpecial: false
+            };
+        }
+
+        function displayImages(images) {
+            const container = document.getElementById('image-container');
+            container.innerHTML = ''; // 기존 이미지를 제거
+
+            images.forEach(image => {
+                const div = document.createElement('div');
+                div.className = 'image-item';
+                div.style.backgroundImage = `url(${image.url})`;
+
+                if (image.isSpecial) {
+                    div.style.backgroundColor = 'purple'; // 1~40번 이미지일 때 배경색 보라색으로 설정
+                }
+
+                container.appendChild(div);
+            });
+        }
+
+        function updateStats() {
+            const specialProbability = ((specialDrawn / totalDrawn) * 100).toFixed(2);
+
+            document.getElementById('total-drawn').innerText = totalDrawn;
+            document.getElementById('special-drawn').innerText = specialDrawn;
+            document.getElementById('seven-drawn').innerText = sevenDrawn;
+            document.getElementById('special-probability').innerText = specialProbability + '%';
+            document.getElementById('cost').innerText = cost.toLocaleString(); // 비용을 형식화하여 표시
+        }
+    </script>
+</body>
+</html>
