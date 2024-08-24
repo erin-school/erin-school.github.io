@@ -253,33 +253,31 @@
                 numOptions = Math.floor(Math.random() * 2) + 1; // 1 또는 2
             }
 
-            const selectedOptions = [];
             let maxRanges = {};
 
-            while (selectedOptions.length < numOptions) {
-                const randomIndex = Math.floor(Math.random() * options.length);
-                const option = options[randomIndex];
-                if (!selectedOptions.includes(option)) {
-                    selectedOptions.push(option);
-                    maxRanges[option] = ranges[option][1];
-                }
-            }
+            const selectedOptions = [];
+    while (selectedOptions.length < numOptions) {
+        const randomIndex = Math.floor(Math.random() * options.length);
+        const option = options[randomIndex];
+        if (!selectedOptions.includes(option)) {
+            selectedOptions.push(option);
+        }
+    }
 
-            // 선택한 옵션과 수치 표시
-            const optionsDiv = document.getElementById('options');
-            optionsDiv.innerHTML = '';  // 기존 내용 제거
+    // 선택한 옵션과 수치 표시
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = '';  // 기존 내용 제거
 
-            const maxRange = Math.max(...Object.values(maxRanges));
-            selectedOptions.forEach(option => {
-                const value = getRandomNumber(...ranges[option]);
-                const optionElement = document.createElement('div');
-                optionElement.className = 'option-item';
-                optionElement.textContent = `${option}: ${value}`;
-                if (value === maxRange) {
-                    optionElement.classList.add('highlight');
-                }
-                optionsDiv.appendChild(optionElement);
-            });
+    selectedOptions.forEach(option => {
+        const value = getRandomNumber(...ranges[option]);
+        const optionElement = document.createElement('div');
+        optionElement.className = 'option-item';
+        optionElement.textContent = `${option}: ${value}`;
+        if (value === ranges[option][1]) {
+            optionElement.classList.add('highlight');
+        }
+        optionsDiv.appendChild(optionElement);
+    });
 
             // 소비된 아이템 수 및 코인 업데이트
             itemCount++;
