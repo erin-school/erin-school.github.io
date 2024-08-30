@@ -134,7 +134,9 @@
 <body>
     <img src="./logo.png" width="250px" style="margin-bottom: 20px;">
     <div id="stats">
-        총 뽑은 수: <span id="total-drawn">0</span> / SSR: <span id="special-drawn">0</span> / <font color="orange">코코아</font>: <span id="seven-drawn">0</span><br>
+        총 뽑은 수: <span id="total-drawn">0</span><br>
+        SSR: <span id="special-drawn">0</span><br>
+        <font color="orange">코코아</font>: <span id="seven-drawn">0</span><br>
         확률 (2% 보장X/180천장 있음): <span id="special-probability">0%</span><br>
         니가 쓴 돈: <span id="cost">0</span> KRW
     </div>
@@ -182,18 +184,14 @@
                 if (image.isSpecial) {
                     specialCount++;
                 }
-                if (image.url.includes('images/37.png')) {
-                    sevenDrawn++;
-                    sevenImageSeen = true;
-                }
             }
 
-            specialDrawn += specialCount;
             totalDrawn += 10;
             cost += 30000;
             totalPicks += 10; // 총 뽑은 이미지 수 증가
 
             displayImages(images);
+            updateStats(); // 총 통계 업데이트
         }
 
         function pickSpecialImage() {
@@ -251,34 +249,48 @@
                     card.classList.add('show');
                 }, index * 100); // 카드가 순차적으로 페이드인 되도록 시간 차이 적용
 
-                if (image.isSpecial) {
-                    // 1~43번 특별한 카드의 경우, 클릭 시 흔들림 애니메이션 후 뒤집기
-                    card.addEventListener('click', () => {
-                        card.classList.add('shake');
-                        setTimeout(() => {
-                            card.classList.remove('shake'); // 흔들림 애니메이션 제거
-                            card.classList.add('flip');
-                            playFlipSound(); // 카드가 뒤집힐 때 소리 재생
-                            // 결과 업데이트
-                            updateStats();
-                        }, 600); // 흔들림 애니메이션의 지속 시간과 맞추기
-                    });
-                } else {
-                    // 일반 카드는 자동으로 전환
+                // 클릭 이벤트 리스너 추가
+                card.addEventListener('click', () => {
+                    card.classList.add('shake');
                     setTimeout(() => {
+                        card.classList.remove('shake'); // 흔들림 애니메이션 제거
                         card.classList.add('flip');
                         playFlipSound(); // 카드가 뒤집힐 때 소리 재생
-                    }, index * 200); // 각 카드가 순차적으로 뒤집히도록 시간 차이 적용
-                }
+
+                        // 특별한 카드 클릭 시 통계 업데이트
+                        if (image.isSpecial) {
+                            updateSpecialDrawn(); // SSR 업데이트
+                            if (image.number === 37) {
+                                updateSevenDrawn(); // 코코아 업데이트
+                            }
+                        }
+                    }, 600); // 흔들림 애니메이션의 지속 시간과 맞추기
+                });
+
+                // 일반 카드는 자동으로 전환
+                setTimeout(() => {
+                    if (!image.isSpecial) {
+                        card.classList.add('flip');
+                        playFlipSound(); // 카드가 뒤집힐 때 소리 재생
+                    }
+                }, index * 200); // 각 카드가 순차적으로 뒤집히도록 시간 차이 적용
             });
+        }
+
+        function updateSpecialDrawn() {
+            specialDrawn++;
+            document.getElementById('special-drawn').innerText = specialDrawn;
+        }
+
+        function updateSevenDrawn() {
+            sevenDrawn++;
+            document.getElementById('seven-drawn').innerText = sevenDrawn;
         }
 
         function updateStats() {
             const specialProbability = ((specialDrawn / totalDrawn) * 100).toFixed(2);
 
             document.getElementById('total-drawn').innerText = totalDrawn;
-            document.getElementById('special-drawn').innerText = specialDrawn;
-            document.getElementById('seven-drawn').innerText = sevenDrawn;
             document.getElementById('special-probability').innerText = specialProbability + '%';
             document.getElementById('cost').innerText = cost.toLocaleString(); // 비용을 형식화하여 표시
         }
