@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[픽뚫연습] 코코아</title>
     <style>
-        /* 스타일은 동일하게 유지 */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #1a1a2e;
@@ -136,11 +135,10 @@
     <img src="./logo.png" width="250px" style="margin-bottom: 20px;">
     <div id="stats">
         총 뽑은 수: <span id="total-drawn">0</span><br>
-        SSR: <span id="special-drawn">0</span> / 
+        SSR: <span id="special-drawn">0</span><br>
         <font color="orange">코코아</font>: <span id="seven-drawn">0</span><br>
         확률 (2% 보장X/180천장 있음): <span id="special-probability">0%</span><br>
-        니가 쓴 돈: <span id="cost">0</span> KRW<br>
-      
+        니가 쓴 돈: <span id="cost">0</span> KRW
     </div>
     <button onclick="pickImages()">만남 10회</button>
     <div id="image-container"></div>
@@ -154,7 +152,7 @@
         let sevenDrawn = 0;
         let cost = 0;
         let sevenImageSeen = false;
-        let guaranteedPicks = 180; // 확정 뽑기 수치 초기값
+        let totalPicks = 0;
 
         function playFlipSound() {
             const flipSound = new Audio('flip.mp3');
@@ -164,21 +162,21 @@
         function pickImages() {
             const images = [];
             let specialCount = 0;
+
             for (let i = 0; i < 10; i++) {
                 let image;
 
-                if (guaranteedPicks <= 0 && !sevenImageSeen) {
-                    // 확정 뽑기 수치가 0이 되면 37번 카드 강제 포함
+                if (totalPicks >= 170 && !sevenImageSeen) {
+                    // 170번째까지 37번 이미지가 나오지 않았다면, 반드시 포함
                     image = {
                         url: 'images/37.png',
                         isSpecial: true,
                         number: 37
                     };
-                    sevenImageSeen = true; // 37번이 나온 후에는 다시 나오지 않게 설정
-                } else if (Math.random() < 0.02) { // 2% 확률로 특별한 카드 선택
+                    sevenImageSeen = true;
+                } else if (Math.random() < 0.02) { // 2% 확률로 1~43번 이미지 선택
                     image = pickSpecialImage();
-                    
-                } else { // 98% 확률로 일반 카드 선택
+                } else { // 98% 확률로 44~142번 이미지 선택
                     image = pickGeneralImage();
                 }
 
@@ -186,13 +184,11 @@
                 if (image.isSpecial) {
                     specialCount++;
                 }
-
-                // 확정 뽑기 수치 감소
-              //  guaranteedPicks = Math.max(guaranteedPicks - 1, 0); // 확정 뽑기 수치가 0보다 작아지지 않도록 보장
             }
 
             totalDrawn += 10;
             cost += 30000;
+            totalPicks += 10; // 총 뽑은 이미지 수 증가
 
             displayImages(images);
             updateStats(); // 총 통계 업데이트
@@ -201,8 +197,7 @@
         function pickSpecialImage() {
             let imageNumber;
             if (Math.random() < 0.5) { // 50% 확률로 37번 이미지
-                imageNumber = 37;                
-                guaranteedPicks = 180; // 37번 카드가 나온 후 수치를 초기화
+                imageNumber = 37;
             } else {
                 imageNumber = Math.floor(Math.random() * 43) + 1; // 1~43번 중 다른 이미지 선택
                 if (imageNumber >= 37) imageNumber += 1; // 37번을 건너뛰도록 설정
@@ -298,7 +293,6 @@
             document.getElementById('total-drawn').innerText = totalDrawn;
             document.getElementById('special-probability').innerText = specialProbability + '%';
             document.getElementById('cost').innerText = cost.toLocaleString(); // 비용을 형식화하여 표시
-           // document.getElementById('guaranteed-picks').innerText = guaranteedPicks; // 확정 뽑기 수치 업데이트
         }
     </script>
 </body>
