@@ -140,7 +140,7 @@
         <font color="orange">코코아</font>: <span id="seven-drawn">0</span><br>
         확률 (2% 보장X/180천장 있음): <span id="special-probability">0%</span><br>
         니가 쓴 돈: <span id="cost">0</span> KRW<br>
-        확뽑까지: <span id="guaranteed-picks">180</span>
+      
     </div>
     <button onclick="pickImages()">만남 10회</button>
     <div id="image-container"></div>
@@ -164,7 +164,6 @@
         function pickImages() {
             const images = [];
             let specialCount = 0;
-            guaranteedPicks=guaranteedPicks-10;
             for (let i = 0; i < 10; i++) {
                 let image;
 
@@ -299,7 +298,7 @@
             document.getElementById('total-drawn').innerText = totalDrawn;
             document.getElementById('special-probability').innerText = specialProbability + '%';
             document.getElementById('cost').innerText = cost.toLocaleString(); // 비용을 형식화하여 표시
-            document.getElementById('guaranteed-picks').innerText = guaranteedPicks; // 확정 뽑기 수치 업데이트
+           // document.getElementById('guaranteed-picks').innerText = guaranteedPicks; // 확정 뽑기 수치 업데이트
         }
     </script>
 </body>
