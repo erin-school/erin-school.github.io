@@ -173,7 +173,6 @@
                         isSpecial: true,
                         number: 37
                     };
-                    totalPicks=0;
                     sevenImageSeen = true;
                 } else if (Math.random() < 0.0002) { // 2% 확률로 1~43번 이미지 선택
                     image = pickSpecialImage();
@@ -199,7 +198,6 @@
             let imageNumber;
             if (Math.random() < 0.5) { // 50% 확률로 37번 이미지
                 imageNumber = 37;
-                totalPicks=0;
             } else {
                 imageNumber = Math.floor(Math.random() * 43) + 1; // 1~43번 중 다른 이미지 선택
                 if (imageNumber >= 37) imageNumber += 1; // 37번을 건너뛰도록 설정
