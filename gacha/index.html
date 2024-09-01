@@ -153,6 +153,7 @@
         let cost = 0;
         let sevenImageSeen = false;
         let totalPicks = 0;
+        const guaranteedSpecialInterval = 170; // 특별한 카드가 보장되는 주기
 
         function playFlipSound() {
             const flipSound = new Audio('flip.mp3');
@@ -166,18 +167,18 @@
             for (let i = 0; i < 10; i++) {
                 let image;
 
-                if (totalPicks >= 170 && !sevenImageSeen) {
-                    // 170번째까지 37번 이미지가 나오지 않았다면, 반드시 포함
+                if (totalPicks > 0 && totalPicks % guaranteedSpecialInterval === 0 && !sevenImageSeen) {
+                    // 보장된 주기(180번째)일 때 특별한 카드 강제 포함
                     image = {
                         url: 'images/37.png',
                         isSpecial: true,
                         number: 37
                     };
-                    totalPicks=0;
+                    totalPicks = 0; // 주기를 초기화하여 다음 보장 주기까지 유지
                     sevenImageSeen = true;
-                } else if (Math.random() < 0.02) { // 2% 확률로 1~43번 이미지 선택
+                } else if (Math.random() < 0.02) { // 2% 확률로 특별한 카드 선택
                     image = pickSpecialImage();
-                } else { // 98% 확률로 44~142번 이미지 선택
+                } else { // 98% 확률로 일반 카드 선택
                     image = pickGeneralImage();
                 }
 
@@ -199,7 +200,7 @@
             let imageNumber;
             if (Math.random() < 0.5) { // 50% 확률로 37번 이미지
                 imageNumber = 37;
-                totalPicks=0;
+                totalPicks = 0; // 주기 초기화
             } else {
                 imageNumber = Math.floor(Math.random() * 43) + 1; // 1~43번 중 다른 이미지 선택
                 if (imageNumber >= 37) imageNumber += 1; // 37번을 건너뛰도록 설정
