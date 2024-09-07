@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>데미지 계산식</title>
+    <title>데미지 계산식 베타</title>
     <style>
         .container {
             max-width: 800px;
@@ -94,13 +94,13 @@
 </head>
 <body>
     <div class="container">
-        <p class="credits">게임 내에서 결정되는 모든 공식을 포함하고 있지 않습니다.</p>
+        <p class="credits">게임 내에서 결정되는 모든 공식을 포함하고 있지 않습니다. 공식에 따라 대략적인 정보를 제공하고 있으나 실제 결과와 차이가 있을 수 있습니다.</p>
 
         <form id="damageForm">
             <div class="input-row">
                 <div class="input-container">
                     <label for="attackPower">공격력:</label>
-                    <input type="number" id="attackPower" value="246" required="">
+                    <input type="number" id="attackPower" value="100" required="">
                 </div>
                 <div class="input-container">
                     <label for="attackPowerIncrease">공격력 증가 (%):</label>
@@ -109,7 +109,7 @@
             </div>
             <div class="input-row">
                 <div class="input-container">
-                    <label for="defensePower">방어력:</label>
+                    <label for="defensePower">방어자 방어력:</label>
                     <input type="number" id="defensePower" required="">
                 </div>
                 <div class="input-container">
@@ -216,6 +216,6 @@
 
         <h2 id="result">예상 피해: 309</h2>
     </div>
-    <script src="code.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
