@@ -97,6 +97,7 @@
         <p class="credits">게임 내에서 결정되는 모든 공식을 포함하고 있지 않습니다. 공식에 따라 대략적인 정보를 제공하고 있으나 실제 결과와 차이가 있을 수 있습니다.</p>
 
         <form id="damageForm">
+            <b>공격자 정보</b><br><br>
             <div class="input-row">
                 <div class="input-container">
                     <label for="attackPower">공격력:</label>
@@ -107,14 +108,31 @@
                     <input type="number" id="attackPowerIncrease" required="">
                 </div>
             </div>
+            
             <div class="input-row">
                 <div class="input-container">
-                    <label for="defensePower">방어자 방어력:</label>
-                    <input type="number" id="defensePower" required="">
+                    <label for="attackerDamageIncrease">공격자 데미지 증가 (%):</label>
+                    <input type="number" id="attackerDamageIncrease" step="1" required="">
                 </div>
                 <div class="input-container">
-                    <label for="skillMultiplier">스킬 배율:</label>
+                    <label for="attackerDamageReduction">공격자 데미지 감소 (%):</label>
+                    <input type="number" id="attackerDamageReduction" step="1" required="">
+                </div>
+
+            </div>
+            <div class="input-row">
+                
+                <div class="input-container">
+                    <label for="skillMultiplier">스킬 계수:</label>
                     <input type="number" id="skillMultiplier" aria-valuemax="100" step="1" value="100" required="">
+                </div>
+                <div class="input-container">
+                    <label for="attackerHealthStateMultiplier">공격자 건강 상태:</label>
+                    <select id="attackerHealthStateMultiplier">
+                        <option value="30">빈사</option>
+                        <option value="20">부상</option>
+                        <option value="0" selected="">건강</option>
+                    </select>
                 </div>
             </div>
             <div class="input-row">
@@ -127,34 +145,24 @@
                     <input type="number" id="critDamage" step="1" value="130">
                 </div>
             </div>
+            <b>방어자 정보</b><br><br>
             <div class="input-row">
                 <div class="input-container">
-                    <label for="attackerDamageIncrease">공격자 데미지 증가 (%):</label>
-                    <input type="number" id="attackerDamageIncrease" step="1" required="">
+                    <label for="defensePower">방어자 방어력:</label>
+                    <input type="number" id="defensePower" required="">
                 </div>
+                
                 <div class="input-container">
-                    <label for="defenderDamageIncrease">방어자 데미지 취약점 (%):</label>
+                    <label for="defenderDamageIncrease">방어자 받는 데미지 증가 (%):</label>
                     <input type="number" id="defenderDamageIncrease" step="1" required="">
                 </div>
             </div>
             <div class="input-row">
+
+              
                 <div class="input-container">
-                    <label for="attackerDamageReduction">공격자 데미지 디버프 (%):</label>
-                    <input type="number" id="attackerDamageReduction" step="1" required="">
-                </div>
-                <div class="input-container">
-                    <label for="defenderDamageReduction">방어자 데미지 디버프 (%):</label>
+                    <label for="defenderDamageReduction">방어자 받는 데미지 감소 (%):</label>
                     <input type="number" id="defenderDamageReduction" step="1" required="">
-                </div>
-            </div>
-            <div class="input-row">
-                <div class="input-container">
-                    <label for="attackerHealthStateMultiplier">공격자 건강 상태:</label>
-                    <select id="attackerHealthStateMultiplier">
-                        <option value="30">빈사</option>
-                        <option value="20">부상</option>
-                        <option value="0" selected="">건강</option>
-                    </select>
                 </div>
                 <div class="input-container">
                     <label for="defenderHealthStateMultiplier">방어자 건강 상태:</label>
