@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1a1a2e;
+            background-color: #14493c;
             color: #fff;
             margin: 0;
             padding: 20px;
@@ -130,8 +130,7 @@
             }
         }
     </style>
-</head>
-<body>
+</head><body>
     <img src="./logo.png" width="250px" style="margin-bottom: 20px;">
     <div id="stats">
         총 뽑은 수: <span id="total-drawn">0</span><br>
@@ -140,10 +139,9 @@
         확률 (2% 보장X/180천장 있음): <span id="special-probability">0%</span><br>
         니가 쓴 돈: <span id="cost">0</span> KRW
     </div>
-    <button onclick="pickImages()">만남 10회</button>
+    <button id="pick-button" onclick="pickImages()" style="background-color: #e94560;">만남 10회</button>
     <div id="image-container"></div>
-    
-    <!-- 오디오 요소 추가 -->
+
     <audio id="flip-sound" src="flip.mp3" preload="auto"></audio>
 
     <script>
@@ -153,6 +151,7 @@
         let cost = 0;
         let sevenImageSeen = false;
         let totalPicks = 0;
+        let hasUnopenedSpecialCard = false; // 아직 오픈되지 않은 특별한 카드가 있는지 여부
 
         function playFlipSound() {
             const flipSound = new Audio('flip.mp3');
@@ -160,6 +159,10 @@
         }
 
         function pickImages() {
+            if (hasUnopenedSpecialCard) {
+                return; // 특별한 카드가 오픈되지 않았으면 아무 동작도 하지 않음
+            }
+
             const images = [];
             let specialCount = 0;
 
@@ -192,6 +195,12 @@
 
             displayImages(images);
             updateStats(); // 총 통계 업데이트
+
+            // 만약 특별한 카드가 하나라도 있으면 버튼 색을 회색으로 변경하고 비활성화
+            if (specialCount > 0) {
+                hasUnopenedSpecialCard = true; // 오픈되지 않은 특별 카드가 있음을 표시
+                disablePickButton(); // 버튼 비활성화
+            }
         }
 
         function pickSpecialImage() {
@@ -263,6 +272,10 @@
                             if (image.number === 37) {
                                 updateSevenDrawn(); // 코코아 업데이트
                             }
+
+                            // 모든 특별한 카드가 오픈되면 버튼 다시 활성화
+                            hasUnopenedSpecialCard = false;
+                            enablePickButton(); // 버튼 다시 활성화
                         }
                     }, 600); // 흔들림 애니메이션의 지속 시간과 맞추기
                 });
@@ -294,7 +307,23 @@
             document.getElementById('special-probability').innerText = specialProbability + '%';
             document.getElementById('cost').innerText = cost.toLocaleString(); // 비용을 형식화하여 표시
         }
+
+        // 버튼을 비활성화하고 색을 회색으로 변경
+        function disablePickButton() {
+            const button = document.getElementById('pick-button');
+            button.disabled = true;
+            button.style.backgroundColor = '#888'; // 회색으로 변경
+        }
+
+        // 버튼을 다시 활성화하고 원래 색으로 복구
+        function enablePickButton() {
+            const button = document.getElementById('pick-button');
+            button.disabled = false;
+            button.style.backgroundColor = '#e94560'; // 원래 색상으로 복구
+        }
     </script>
 </body>
+<p>
+
 <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fdocs.srpg.life"><img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fdocs.srpg.life&countColor=%23263759" /></a>
 </html>
