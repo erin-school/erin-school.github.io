@@ -228,67 +228,69 @@
         }
 
         function displayImages(images) {
-            const container = document.getElementById('image-container');
-            container.innerHTML = ''; // 기존 이미지를 제거
+    const container = document.getElementById('image-container');
+    container.innerHTML = ''; // 기존 이미지를 제거
 
-            images.forEach((image, index) => {
-                const card = document.createElement('div');
-                card.className = `card ${image.isSpecial ? 'special-card' : 'normal-card'}`;
+    images.forEach((image, index) => {
+        const card = document.createElement('div');
+        card.className = `card ${image.isSpecial ? 'special-card' : 'normal-card'}`;
+        card.dataset.isFlipped = false; // 카드가 뒤집혔는지 여부를 추적
 
-                const cardInner = document.createElement('div');
-                cardInner.className = 'card-inner';
+        const cardInner = document.createElement('div');
+        cardInner.className = 'card-inner';
 
-                const cardFront = document.createElement('div');
-                cardFront.className = 'card-front';
-                cardFront.style.backgroundImage = `url(${image.url})`;
+        const cardFront = document.createElement('div');
+        cardFront.className = 'card-front';
+        cardFront.style.backgroundImage = `url(${image.url})`;
 
-                const cardBack = document.createElement('div');
-                cardBack.className = 'card-back';
-                if (image.isSpecial) {
-                    cardBack.classList.add('special-card-back'); // 특별한 카드의 경우 배경 이미지 변경
-                }
-
-                cardInner.appendChild(cardFront);
-                cardInner.appendChild(cardBack);
-                card.appendChild(cardInner);
-                container.appendChild(card);
-
-                // 카드가 화면에 나타날 때 페이드인 효과를 추가
-                setTimeout(() => {
-                    card.classList.add('show');
-                }, index * 100); // 카드가 순차적으로 페이드인 되도록 시간 차이 적용
-
-                // 클릭 이벤트 리스너 추가
-                card.addEventListener('click', () => {
-                    card.classList.add('shake');
-                    setTimeout(() => {
-                        card.classList.remove('shake'); // 흔들림 애니메이션 제거
-                        card.classList.add('flip');
-                        playFlipSound(); // 카드가 뒤집힐 때 소리 재생
-
-                        // 특별한 카드 클릭 시 통계 업데이트
-                        if (image.isSpecial) {
-                            updateSpecialDrawn(); // SSR 업데이트
-                            if (image.number === 37) {
-                                updateSevenDrawn(); // 코코아 업데이트
-                            }
-
-                            // 모든 특별한 카드가 오픈되면 버튼 다시 활성화
-                            hasUnopenedSpecialCard = false;
-                            enablePickButton(); // 버튼 다시 활성화
-                        }
-                    }, 600); // 흔들림 애니메이션의 지속 시간과 맞추기
-                });
-
-                // 일반 카드는 자동으로 전환
-                setTimeout(() => {
-                    if (!image.isSpecial) {
-                        card.classList.add('flip');
-                        playFlipSound(); // 카드가 뒤집힐 때 소리 재생
-                    }
-                }, index * 200); // 각 카드가 순차적으로 뒤집히도록 시간 차이 적용
-            });
+        const cardBack = document.createElement('div');
+        cardBack.className = 'card-back';
+        if (image.isSpecial) {
+            cardBack.classList.add('special-card-back'); // 특별한 카드의 경우 배경 이미지 변경
         }
+
+        cardInner.appendChild(cardFront);
+        cardInner.appendChild(cardBack);
+        card.appendChild(cardInner);
+        container.appendChild(card);
+
+        // 카드가 화면에 나타날 때 페이드인 효과를 추가
+        setTimeout(() => {
+            card.classList.add('show');
+        }, index * 100); // 카드가 순차적으로 페이드인 되도록 시간 차이 적용
+
+        // 클릭 이벤트 리스너 추가
+        card.addEventListener('click', () => {
+            // 카드가 이미 열렸는지 확인
+            if (card.dataset.isFlipped === "true") return;
+
+            card.classList.add('shake');
+            setTimeout(() => {
+                card.classList.remove('shake'); // 흔들림 애니메이션 제거
+                card.classList.add('flip');
+                card.dataset.isFlipped = "true"; // 카드가 뒤집혔다고 표시
+                playFlipSound(); // 카드가 뒤집힐 때 소리 재생
+
+                // 특별한 카드 클릭 시 통계 업데이트 (카드가 이미 열렸다면 업데이트하지 않음)
+                if (image.isSpecial) {
+                    updateSpecialDrawn(); // SSR 업데이트
+                    if (image.number === 37) {
+                        updateSevenDrawn(); // 코코아 업데이트
+                    }
+                }
+            }, 600); // 흔들림 애니메이션의 지속 시간과 맞추기
+        });
+
+        // 일반 카드는 자동으로 전환
+        setTimeout(() => {
+            if (!image.isSpecial) {
+                card.classList.add('flip');
+                playFlipSound(); // 카드가 뒤집힐 때 소리 재생
+            }
+        }, index * 200); // 각 카드가 순차적으로 뒤집히도록 시간 차이 적용
+    });
+}
+
 
         function updateSpecialDrawn() {
             specialDrawn++;
