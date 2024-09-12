@@ -36,7 +36,7 @@
 
     async function checkPasswordOnServer(inputPassword) {
         try {
-            const response = await fetch('//server:srpg.life:private:guest', {
+            const response = await fetch('server://srpg.life:PrivateGuest', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
