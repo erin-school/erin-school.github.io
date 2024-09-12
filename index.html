@@ -19,9 +19,9 @@
     <video src="./bb.mp4" muted loop autoplay></video>
     <div class="overlay"></div>
     <div class="text">
-      <h2>AFK:Journey</h2> 
-      <h3>Korea Wiki</h3>
-      <p>AFK:새로운 여정 한국 위키에 오신 것을 환영합니다. 운영은 하지 않습니다.<br></p>
+      <h2>Rest until you feel</h2> 
+      <h3>Like playing</h3>
+      <p>우리들만의 공간으로 다시 업데이트 했습니다.<br></p>
       
       <a href="#" id="deviceLink">Explore</a><br><br><br>
     </div>
@@ -36,19 +36,22 @@
         return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
 
-    async function checkPassword(inputPassword) {
-      const encoder = new TextEncoder();
-      const data = encoder.encode(inputPassword);
-      
+    async function checkPasswordOnServer(inputPassword) {
+        try {
+            const response = await fetch('//server:srpg.life:private:guest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ password: inputPassword })
+            });
 
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-
-      const correctHash = '34819d7beeabb34819d7beeabb9260a5c854bc85b3e44ae8f70a9ef2073b2e8c9c2a91c455caa34819d7beeabb9260a5c854bc85b3e44ae8f70a9ef2073b2e8c9c2a91c455caa34819d7beeabb9260a5c854bc85b3e44ae8f70a9ef2073b2e8c9c2a91c455caa34819d7beeabb9260a5c854bc85b3e44ae8f70a9ef2073b2e8c9c2a91c455caa34819d7beeabb9260a5c854bc85b3e44ae8f70a9ef2073b2e8c9c2a91c455caa34819d7beeabb9260a5c854bc85b3e44ae8f70a9ef2073b2e8c9c2a91c455caa34819d7beeabb9260a5c854bc85b3e44ae8f70a9ef2073b2e8c9c2a91c455caa34819d7beeabb9260a5c854bc85b3e44ae8f70a9ef2073b2e8c9c2a91c455caa9260a5c854bc85b3e44ae8f70a9ef2073b2e8c9c2a91c455caa';
-
-      return hashHex === correctHash;
+            const result = await response.json();
+            return result.success;
+        } catch (error) {
+            console.error('Error checking password:', error);
+            return false;
+        }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -60,23 +63,20 @@
             const password = prompt('전달드린 비밀번호를 입력하시면 됩니다.');
             
             if (password) {
-              const isPasswordCorrect = await checkPassword(password);
-              if (isMobileDevice()) {
-            // 모바일 기기용 링크
-            linkElement.href = "https://srpg.life";
-        } else {
-            // PC용 링크
-            linkElement.href = "https://srpg.life";
-        }
+              const isPasswordCorrect = await checkPasswordOnServer(password);
+              
               if (isPasswordCorrect) {
-                url('aw475712qcXr8724c2R01eS8c9c2a91c455cAXxF'); 
-                
+                  if (isMobileDevice()) {
+                      linkElement.href = "https://srpg.life";
+                  } else {
+                      linkElement.href = "https://srpg.life";
+                  }
+                  linkElement.click();
               } else {
-                alert('비밀번호가 틀렸습니다.');
+                  alert('비밀번호가 틀렸습니다.');
               }
             }
         });
-      
     });
 
   </script>
