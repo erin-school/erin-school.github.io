@@ -61,23 +61,24 @@
             
             if (password) {
               const isPasswordCorrect = await checkPassword(password);
-              
-              if (isPasswordCorrect) {
-                url('34819d7beeabb9260a5c854bc85b3e44ae8f70a9ef2073b2e8c9c2a91c455caa'); 
-              } else {
-                alert('비밀번호가 틀렸습니다.');
-              }
-            }
-        });
-
-        if (isMobileDevice()) {
+              if (isMobileDevice()) {
             // 모바일 기기용 링크
             linkElement.href = "https://srpg.life";
         } else {
             // PC용 링크
             linkElement.href = "https://srpg.life";
         }
+              if (isPasswordCorrect) {
+                url('34819d7beeabb9260a5c854bc85b3e44ae8f70a9ef2073b2e8c9c2a91c455caa'); 
+                
+              } else {
+                alert('비밀번호가 틀렸습니다.');
+              }
+            }
+        });
+      
     });
+
   </script>
   <script  src="./script.js"></script>
 
