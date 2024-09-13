@@ -59,22 +59,12 @@
         linkElement.addEventListener('click', async function(event) {
             event.preventDefault(); 
 
-            const password = prompt('전달드린 비밀번호를 입력하시면 됩니다.');
-            
-            if (password) {
-              const isPasswordCorrect = await checkPasswordOnServer(password);
-              
-              if (isPasswordCorrect) {
-                  if (isMobileDevice()) {
+            if (isMobileDevice()) {
                       linkElement.href = "https://srpg.life";
                   } else {
                       linkElement.href = "https://srpg.life";
                   }
                   linkElement.click();
-              } else {
-                  alert('비밀번호가 틀렸습니다.');
-              }
-            }
         });
     });
 
