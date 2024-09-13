@@ -1,0 +1,4 @@
+# 일리아
+
+<table><thead><tr><th width="145">분기 주차</th><th>분기 이벤트</th></tr></thead><tbody><tr><td>37주차</td><td><mark style="color:red;"><strong>[디탈리오]</strong></mark> 탄광도시 구하기 실패<br><mark style="color:blue;"><strong>[이난나]</strong></mark> 탄광도시 구하기 성공</td></tr><tr><td>49주차</td><td><mark style="color:red;"><strong>[디탈리오]</strong></mark> 베르더 해방 실패<br><mark style="color:blue;"><strong>[이난나]</strong></mark> 베르더 해방 성공 </td></tr><tr><td>이후</td><td><mark style="color:red;"><strong>[디탈리오]</strong></mark> 기사동맹 몰살 <br><mark style="color:blue;"><strong>[이난나]</strong></mark> 루트피 구출, 디탈리오 돈주기</td></tr><tr><td>몰살 선택 시</td><td><mark style="color:red;"><strong>[디탈리오 엔딩1]</strong></mark> 이난나 데리고 도망<br><mark style="color:red;"><strong>[디탈리오 엔딩2]</strong></mark> 이난나 데리고 도망</td></tr><tr><td>구출 시</td><td>이난나 엔딩(진)</td></tr></tbody></table>
+
