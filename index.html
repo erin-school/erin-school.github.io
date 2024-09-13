@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" >
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SRPG LIFE</title>
+  <title>SRPG LIFE - 소드 오브 콘발라리아</title>
+  <link rel="icon" href="https://soc.xd.com/favicon.ico"/>
   <link rel="stylesheet" href="./style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,62 +14,44 @@
   <section class="showcase">
     <header>
       <h2 class="logo">SRPG LIFE</h2>
-      <!--<div class="toggle"></div>-->
+      <div class="toggle"></div>
     </header>
-    <audio id="bgm" src="./goodbye.mp3" autoplay loop></audio>
-    <video src="./bb.mp4" muted loop autoplay></video>
+    <video src="./mov/cg_op_f.mp4" muted loop autoplay></video>
     <div class="overlay"></div>
     <div class="text">
-      <h2>Rest until</h2> 
-      <h3>you feel Like playing!</h3>
-      <p>우리들만의 공간으로 다시 업데이트 했습니다.<br></p>
+      <h2>Sword Of Convallria</h2> 
+      <h3>Korea Wiki</h3>
+      <p>소드 오브 콘발라리아 한국 위키에 오신 걸 환영합니다. Explore를 누르면 접속한 기기에 따라 자동으로 모바일/PC버전 중 하나로 이동합니다.<br></p>
       
       <a href="#" id="deviceLink">Explore</a><br><br><br>
     </div>
     <ul class="social">
+      <li><a href="https://cafe.naver.com/swordofconvallaria"><img src="https://i.ibb.co/x7P24fL/facebook.png"></a></li>
+      <li><a href="https://x.com/SoConvallariaKR?mx=2"><img src="https://i.ibb.co/Wnxq2Nq/twitter.png"></a></li>
     </ul>
   </section>
-  
+  <div class="menu">
+    <ul>
+      <li><a href="https://docs.google.com/spreadsheets/d/10hgQV4NYS9jQop7nt95cem-_2jVWWxjrht-4HKHanRY/pubhtml">Mobile Wiki</a></li>
+      <li><a href="https://docs.google.com/spreadsheets/d/1QhHTl6G7--4Jq6baQs3PURrQkH6WEXw2udxDt29g6Z8/pubhtml">PC Wiki</a></li>
+      <li><a href="./gacha.html">Gacha</a></li>
+    </ul>
+  </div>
   <script>
     function isMobileDevice() {
         return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
-
-    async function checkPasswordOnServer(inputPassword) {
-        try {
-            const response = await fetch('server://srpg.life:PrivateGuest' , {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ password: inputPassword })
-            });
-
-            const result = await response.json();
-            return result.success;
-        } catch (error) {
-            console.error('Error checking password:', error);
-            return false;
-        }
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
         var linkElement = document.getElementById('deviceLink');
-        
-        linkElement.addEventListener('click', async function(event) {
-            event.preventDefault(); 
-
-            if (isMobileDevice()) {
-                      linkElement.href = "https://docs.srpg.life";
-                  } else {
-                      linkElement.href = "https://docs.srpg.life";
-                  }
-                  linkElement.click();
-        });
+        if (isMobileDevice()) {
+            // 모바일 기기용 링크
+            linkElement.href = "https://docs.srpg.life/wiki";
+        } else {
+            // PC용 링크
+            linkElement.href = "https://docs.srpg.life/wiki";
+        }
     });
-
-  </script>
-  <script  src="./script.js"></script>
-
+</script>
+<script  src="./script.js"></script>
 </body>
 </html>
