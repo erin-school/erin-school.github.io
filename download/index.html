@@ -70,7 +70,7 @@
       const now = new Date();
       const endTime = new Date();
       endTime.setHours(24, 10, 0, 0);
-
+  
       // 오늘 정오까지 남은 시간 계산
       if (now > endTime) {
         endTime.setDate(endTime.getDate() + 1); 
@@ -79,7 +79,7 @@
       const timeDiff = endTime - now;
       
       if (timeDiff <= 0) {
-        document.getElementById('countdown').textContent = '삭제까지 00:00:00';
+        document.body.innerHTML = ''; // 페이지의 모든 내용을 지웁니다.
         return;
       }
       
@@ -87,12 +87,12 @@
       const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
       
-      document.getElementById('countdown').textContent = "삭제까지 "+
+      document.getElementById('countdown').textContent = "삭제까지 "+ 
           String(hours).padStart(2, '0') + ':' +
           String(minutes).padStart(2, '0') + ':' +
           String(seconds).padStart(2, '0') +" 남음";
     }
-
+  
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>
