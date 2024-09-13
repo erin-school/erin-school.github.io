@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>잘못된 접근</title>
     <style>
-        body {
+        body, html {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,6 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden; /* 스크롤 제거 */
         }
 
         .container {
@@ -25,6 +26,7 @@
             width: 80%;
             max-width: 600px;
             position: relative;
+            top: -20px; /* Y축에서 중앙보다 조금 더 위로 이동 */
             padding-top: 40px; /* 이미지가 삽입될 공간을 확보 */
         }
 
@@ -70,7 +72,6 @@
 </head>
 <body>
     <div class="container">
-      
         <div class="top">
             X
         </div>
