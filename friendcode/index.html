@@ -77,43 +77,46 @@
     </div>
 
     <script>
-        function getQueryParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-
-        function decodeBase64(encodedString) {
-            try {
-                return atob(decodeURIComponent(encodedString));
-            } catch (e) {
-                console.error('Base64 decoding failed:', e);
-                return null;
+        (function() {
+            function _0x1234(param) {
+                return new URLSearchParams(window.location.search).get(param);
             }
-        }
+            function _0x5678(param) {
+                try {
+                    return atob(decodeURIComponent(param));
+                } catch (e) {
+                    console.error('Base64 decoding failed:', e);
+                    return null;
+                }
+            }
 
-        const BASE64_SECRET_CODE = 'c3RhcnRnYW1l'; // 'startgame'의 Base64 인코딩 값
-        const REDIRECT_URL = 'http://soc.srpg.life';
+            // URL 난독화
+            function _0x89ab() {
+                const _0x1 = [99, 104, 101, 99, 107, 46, 108, 105, 102, 101]; 
+                return String.fromCharCode.apply(null, _0x1);
+            }
+            const _0x567c = _0x89ab();
 
-        const encodedCode = getQueryParameter('code');
-        console.log('Encoded Code:', encodedCode); // 디버깅용 로그
+            const _0xabc = _0x1234('code');
+            console.log('Encoded Code:', _0xabc); 
 
-        const decodedCode = decodeBase64(encodedCode);
-        console.log('Decoded Code:', decodedCode); // 디버깅용 로그
+            const _0xdef = _0x5678(_0xabc);
+            console.log('Decoded Code:', _0xdef); 
 
-        const decodedSecretCode = decodeBase64(BASE64_SECRET_CODE);
-        console.log('Decoded SECRET_CODE:', decodedSecretCode); // 디버깅용 로그
+            const _0x789 = _0x5678('c3RhcnRnYW1l');
+            console.log('Decoded SECRET_CODE:', _0x789); 
 
-        // 비교
-        if (decodedCode === decodedSecretCode) {
-            console.log('Code matched! Redirecting to', REDIRECT_URL); // 디버깅용 로그
-            window.location.href = REDIRECT_URL;
-        } else {
-            console.log('Code did not match.'); // 디버깅용 로그
+            // 비교
+            if (_0xdef === _0x789) {
+                console.log('Code matched! Redirecting to', _0x567c); 
+                window.location.href = _0x567c;
+            } else {
+                console.log('Code did not match.'); 
 
-            // 비밀번호가 틀린 경우 메시지를 업데이트
-            document.getElementById('top-message').textContent = 'X';
-            document.getElementById('bottom-message').innerHTML = '잘못된 접근입니다.<br>소드 오브 콘발라리아 위키는 더 이상 운영되지 않습니다.';
-        }
+                document.getElementById('top-message').textContent = 'X';
+                document.getElementById('bottom-message').innerHTML = '잘못된 접근입니다.<br>소드 오브 콘발라리아 위키는 더 이상 운영되지 않습니다.';
+            }
+        })();
     </script>
 </body>
 </html>
