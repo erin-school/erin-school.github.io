@@ -72,71 +72,48 @@
 </head>
 <body>
     <div class="container" id="message-container">
-        <div class="top" id="top-message">X</div>
-        <div class="bottom" id="bottom-message">잘못된 접근입니다.<br>소드 오브 콘발라리아 위키는 더 이상 운영되지 않습니다.</div>
+        <div class="top" id="top-message"></div>
+        <div class="bottom" id="bottom-message"></div>
     </div>
 
     <script>
-        (function() {
-            // Base64 인코딩된 문자열
-            const _0x2d9b = 'Z2V0UXVlcnlQYXJhbWV0cg=='; // 'getQueryParameter'
-            const _0x466b = 'ZGVjb2RlQmFzZTY0'; // 'decodeBase64'
-            const _0x26b7 = 'YmFzZTY0U2VjcmV0Q29kZQ=='; // 'BASE64_SECRET_CODE'
-            const _0x2c9d = 'cmVkaXJlY3RVUkw='; // 'REDIRECT_URL'
-            const _0x57c5 = 'aHR0cHM6Ly9zcnBnLmxpZmUvZnJpZW5kY29kZS8/'; // 'http://srpg.life/friendcode/?code='
-            const _0x18c6 = 'c2FydGdhbWUv'; // 'startgame'
+        function getQueryParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
 
-            function _0x1b69(_0x4d82) {
-                return atob(decodeURIComponent(_0x4d82));
+        function decodeBase64(encodedString) {
+            try {
+                return atob(decodeURIComponent(encodedString));
+            } catch (e) {
+                console.error('Base64 decoding failed:', e);
+                return null;
             }
+        }
 
-            function _0x3734(_0x2bb5) {
-                return atob(_0x2bb5);
-            }
+        const BASE64_SECRET_CODE = 'c3RhcnRnYW1l'; // 'startgame'의 Base64 인코딩 값
+        const REDIRECT_URL = 'http://soc.srpg.life';
 
-            function _0x3b1b(_0x2d9b, _0x466b) {
-                const _0x556c = document.createElement('div');
-                _0x556c.id = _0x2d9b;
-                document.body.appendChild(_0x556c);
-                const _0x4e8f = document.createElement('script');
-                _0x4e8f.innerHTML = _0x466b;
-                _0x556c.appendChild(_0x4e8f);
-                return _0x556c;
-            }
+        const encodedCode = getQueryParameter('code');
+        console.log('Encoded Code:', encodedCode); // 디버깅용 로그
 
-            function _0x5718(_0x1c3f) {
-                return _0x1b69(_0x1c3f);
-            }
+        const decodedCode = decodeBase64(encodedCode);
+        console.log('Decoded Code:', decodedCode); // 디버깅용 로그
 
-            function _0x2a0b(_0x1f7f) {
-                return _0x3734(_0x1f7f);
-            }
+        const decodedSecretCode = decodeBase64(BASE64_SECRET_CODE);
+        console.log('Decoded SECRET_CODE:', decodedSecretCode); // 디버깅용 로그
 
-            function _0x2b25(_0x47dc) {
-                return _0x5718(_0x47dc);
-            }
+        // 비교
+        if (decodedCode === decodedSecretCode) {
+            console.log('Code matched! Redirecting to', REDIRECT_URL); // 디버깅용 로그
+            window.location.href = REDIRECT_URL;
+        } else {
+            console.log('Code did not match.'); // 디버깅용 로그
 
-            function _0x2b71() {
-                const _0x24c1 = _0x3b1b(_0x2d9b, _0x466b);
-                const _0x2a58 = _0x24c1[_0x24c1.id](_0x2a0b);
-                const _0x44bd = getQueryParameter('code');
-                console.log('Encoded Code:', _0x44bd);
-                const _0x4d1d = decodeBase64(_0x44bd);
-                console.log('Decoded Code:', _0x4d1d);
-                const _0x26f5 = decodeBase64(_0x26b7);
-                console.log('Decoded SECRET_CODE:', _0x26f5);
-                if (_0x4d1d === _0x26f5) {
-                    console.log('Code matched! Redirecting to', _0x2b25(_0x2c9d) + _0x57c5);
-                    window.location.href = _0x2b25(_0x2c9d) + _0x57c5;
-                } else {
-                    console.log('Code did not match.');
-                    document.getElementById('top-message').textContent = 'X';
-                    document.getElementById('bottom-message').innerHTML = '잘못된 접근입니다.<br>소드 오브 콘발라리아 위키는 더 이상 운영되지 않습니다.';
-                }
-            }
-
-            _0x2b71();
-        })();
+            // 비밀번호가 틀린 경우 메시지를 업데이트
+            document.getElementById('top-message').textContent = 'X';
+            document.getElementById('bottom-message').innerHTML = '잘못된 접근입니다.<br>소드 오브 콘발라리아 위키는 더 이상 운영되지 않습니다.';
+        }
     </script>
 </body>
 </html>
