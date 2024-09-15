@@ -81,18 +81,15 @@
     </div>
 
     <script>
-        // Helper function to get query parameter value
         function getQueryParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
         }
+        
+        const SECRET_CODE = '1';
+        const REDIRECT_URL = 'http://soc.srpg.life';
 
-        // Your specific secret code
-        const SECRET_CODE = '6xJN17';
-        const REDIRECT_URL = 'http://your-redirect-url.com';
-
-        // Check if the code parameter matches the secret code
-        const code = getQueryParameter('=');
+        const code = getQueryParameter('?=');
         if (code === SECRET_CODE) {
             window.location.href = REDIRECT_URL;
         }
