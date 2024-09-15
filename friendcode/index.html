@@ -79,19 +79,34 @@
             잘못된 접근입니다.<br>소드 오브 콘발라리아 위키는 더 이상 운영되지 않습니다.
         </div>
     </div>
-
     <script>
         function getQueryParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
         }
-        
-        const SECRET_CODE = '1';
+
+        function decodeBase64(encodedString) {
+            try {
+                return atob(encodedString);
+            } catch (e) {
+                console.error('Base64 decoding failed:', e);
+                return null;
+            }
+        }
+
+        const SECRET_CODE = '1'; // base64로 인코딩된 코드
         const REDIRECT_URL = 'http://soc.srpg.life';
 
-        const code = getQueryParameter('?=');
-        if (code === SECRET_CODE) {
+        const encodedCode = getQueryParameter('code');
+        console.log('Encoded Code:', encodedCode); // 디버깅용 로그
+        const decodedCode = decodeBase64(encodedCode);
+        console.log('Decoded Code:', decodedCode); // 디버깅용 로그
+
+        if (decodedCode === SECRET_CODE) {
+            console.log('Code matched! Redirecting to', REDIRECT_URL); // 디버깅용 로그
             window.location.href = REDIRECT_URL;
+        } else {
+            console.log('Code did not match.'); // 디버깅용 로그
         }
     </script>
 </body>
