@@ -69,7 +69,7 @@
             padding: 20px;
             width: 100%;
             z-index: 1;
-            margin-bottom: 40px; /* Add margin-bottom to create space for the footer */
+            margin-bottom: 50px; 
         }
         .card {
             position: relative;
@@ -127,17 +127,17 @@
         width: 100%;
     }
     .logo {
-        font-size: 30px; /* Reduced font size for mobile */
-        text-align: left; /* Align to the left on mobile */
-        margin-left: 27px; /* Add left margin to align with card container */
-        margin-top: 20px; /* Ensure it has some top margin */
-        width: calc(100% - 30px); /* Adjust width to account for the left margin */
+        font-size: 30px; 
+        text-align: left; 
+        margin-left: 27px; 
+        margin-top: 20px;
+        width: calc(100% - 30px);
     }
     .description {
         text-align: left; 
-        font-size: 16px; /* Reduced font size for mobile */
-        margin-left: 15px; /* Add left margin to align with card container */
-        width: calc(100% - 30px); /* Adjust width to account for the left margin */
+        font-size: 16px;
+        margin-left: 15px; 
+        width: calc(100% - 30px); 
     }
 }
         footer {
@@ -186,9 +186,24 @@
     </footer>
 
     <script>
+        function toBase64(str) {
+            return btoa(str);
+        }
+
+        function fromBase64(str) {
+            return atob(str);
+        }
+
         function handleCardClick(url, showPopup = false) {
             if (showPopup) {
-                alert('더 이상 지원하지 않는 스페이스입니다. 아직 소오콘 커뮤니티를 통해 유입되시는 분들이 계실까봐 임시로 표시해두었으며 30일 후 이 카드는 삭제됩니다.');
+                const userInput = prompt('더 이상 지원하지 않는 스페이스입니다. 아직 소오콘 커뮤니티를 통해 유입되시는 분들이 계실까봐 임시로 표시해두었으며 30일 후 이 카드는 삭제됩니다.\n\n별도 코드가 있다면 입력해 주세요:');
+                if (userInput) {
+                    const encodedInput = toBase64(userInput);
+                    const finalUrl = `http://srpg.life/friendcode/?=${encodedInput}`;
+                    window.location.href = finalUrl;
+                } else {
+                    alert('코드 입력이 취소되었습니다.');
+                }
             } else {
                 window.location.href = url;
             }
