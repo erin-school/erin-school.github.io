@@ -20,110 +20,146 @@
             justify-content: center;
             min-height: 100vh;
             text-align: center;
-            color: #ffffff; /* 텍스트를 흰색으로 변경 */
-            background-color: #1c1c1c; /* 다크 그레이 배경 */
+            color: #ffffff;
+        }
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            transform: scale(1.5);
+            transform-origin: center;
         }
         .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 0;
+        }
+        .logo {
+            color: #ffffff;
+            font-size: 48px;
+            font-weight: 700;
+            margin-top: 20px;
+            z-index: 1;
+            text-align: center;
+        }
+        .description {
+            font-size: 18px;
+            color: #bbbbbb;
+            margin-bottom: 20px;
+            margin: 10px;
+            max-width: 800px;
+            padding: 0 14px;
+            z-index: 1;
+            text-align: center;
+        }
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            width: 100%;
+            z-index: 1;
+            margin-bottom: 80px; /* Add margin-bottom to create space for the footer */
+        }
+        .card {
+            position: relative;
+            width: 250px;
+            height: 350px;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background-size: cover;
+            background-position: center;
+        }
+        .card::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* 불투명 검정색 오버레이 */
-            z-index: 0; /* 오버레이를 콘텐츠 뒤로 보내기 */
-        }
-        .logo {
-            color: #ffffff; /* 로고 색상 흰색 */
-            font-size: 48px;
-            font-weight: 700;
-            margin-top: 20px;
-            z-index: 1; /* 로고를 오버레이 위로 보이게 설정 */
-        }
-        .description {
-            font-size: 18px;
-            color: #bbbbbb; /* 설명 텍스트 연한 회색으로 변경 */
-            margin-bottom: 20px;
-            margin: 10px;
-            max-width: 800px;
-            padding: 0 14px;
-            z-index: 1; /* 설명 텍스트를 오버레이 위로 보이게 설정 */
-        }
-        .cards-container {
-            display: flex;
-            flex-wrap: wrap; /* 카드들을 여러 줄로 나눌 수 있게 함 */
-            justify-content: center; /* 카드들을 가운데 정렬 */
-            gap: 20px;
-            padding: 20px;
-            width: 100%; /* 전체 화면 너비에 맞춤 */
-            z-index: 1; /* 카드들을 오버레이 위로 보이게 설정 */
-        }
-        .card {
-            position: relative; /* 카드 내부의 절대 위치 지정 */
-            width: 250px; /* 카드 너비를 줄였습니다 */
-            padding-top: 250px; /* 카드의 높이를 너비와 동일하게 설정 */
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1); /* 그림자를 밝게 변경 */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer; /* 클릭할 수 있음을 나타내는 커서 */
-            background-size: cover; /* 배경 이미지의 사이즈 조정 */
-            background-position: center; /* 배경 이미지의 위치 조정 */
-            background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 20%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: 1;
         }
         .card-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 10px 15px;
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            color: #ffffff;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.6); /* 불투명 검정색 배경 */
-            color: #ffffff; /* 텍스트 색상 흰색으로 변경 */
-            box-sizing: border-box; /* 패딩을 포함하여 높이를 유지 */
         }
         .card-content h3 {
-            font-size: 18px; /* 카드 제목의 폰트 크기 조정 */
-            margin-bottom: 8px;
-            color: #ffffff; /* 카드 제목을 흰색으로 변경 */
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #f9f9f9;
         }
         .card-content p {
-            font-size: 12px; /* 카드 설명 텍스트의 폰트 크기 조정 */
-            color: #dddddd; /* 카드 설명 텍스트를 연한 회색으로 변경 */
+            font-size: 14px;
+            color: #dddddd;
             margin-bottom: 0;
-            padding: 0 10px; /* 좌우 패딩 추가 */
         }
         .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(30, 30, 30, 0.2); /* 호버 시 그림자 밝게 변경 */
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         @media (max-width: 768px) {
             .cards-container {
-                flex-direction: column; /* 모바일에서는 카드들이 세로로 나열됨 */
-                align-content: center;
+                flex-direction: column;
                 padding: 0 30px;
             }
             .card {
                 width: 100%;
-                padding-top: 100%; /* 높이를 가로와 동일하게 유지 */
+            }
+            .logo {
+                font-size: 36px; /* Reduced font size for mobile */
+                text-align: left; /* Align to the left on mobile */
+            }
+            .description {
+                text-align: left; 
+                font-size: 16px; /* Reduced font size for mobile */
             }
         }
-        @media (max-width: 991px) {
-            .description {
-                font-size: 16px;
-                padding: 0 30px;
-            }
+        footer {
+            width: 100%;
+            text-align: center;
+            color: #bbbbbb;
+            padding: 10px 0;
+            font-size: 14px;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
+
+    <!-- 배경 비디오 -->
+    <video autoplay muted loop class="background-video">
+        <source src="./mov/afk2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
     <div class="overlay"></div>
+
     <div class="logo">SRPG Life</div>
+
     <div class="description">
-        <p>전략 & 전술 게임의 모든 것을 한 곳에서 만나보세요. 거기에 모바일을 살짝 곁드린!</p><br>
+        <p>Discover everything about strategy & tactics games in one place. With a touch of mobile on the side!</p><br>
     </div>
+
     <div class="cards-container">
         <div class="card" style="background-image: url('./dd1.PNG');" onclick="handleCardClick('https://afk.srpg.life/')">
             <div class="card-content">
@@ -140,10 +176,14 @@
         <div class="card" style="background-image: url('./ov.PNG');" onclick="handleCardClick('https://uo.srpg.life/')">
             <div class="card-content">
                 <h3>Unicorn Overlord</h3>
-                <p>준비 중</p>
+                <p>준비 중<br>&nbsp;</p>
             </div>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2024 SRPG Life. All rights reserved.</p>
+    </footer>
 
     <script>
         function handleCardClick(url, showPopup = false) {
