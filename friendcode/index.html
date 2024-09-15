@@ -92,35 +92,29 @@
         }
 
         // 난독화된 URL 정의
-        const _0x1a2b = 'aHR0cDovL3NvYy5zcnBnLmxpZmU='; // Base64로 인코딩된 'http://soc.srpg.life'
-        const BASE64_SECRET_CODE = 'c3RhcnRnYW1l'; // 'startgame'의 Base64 인코딩 값
+        const _0x1a2b = 'aHR0cDovL3NvYy5zcnBnLmxpZmU='; 
+        const BASE64_SECRET_CODE = 'c3RhcnRnYW1l';
 
-        const REDIRECT_URL = decodeBase64(_0x1a2b); // 난독화된 URL 디코딩
+        const REDIRECT_URL = decodeBase64(_0x1a2b); 
 
         function logAndRedirectIfValid() {
             const encodedCode = getQueryParameter('code');
-            console.log('Encoded Code:', encodedCode); // 디버깅용 로그
 
             const decodedCode = decodeBase64(encodedCode);
-            console.log('Decoded Code:', decodedCode); // 디버깅용 로그
+          
 
             const decodedSecretCode = decodeBase64(BASE64_SECRET_CODE);
-            console.log('Decoded SECRET_CODE:', decodedSecretCode); // 디버깅용 로그
-
-            // 비교
+      
             if (decodedCode === decodedSecretCode) {
-                console.log('Code matched! Redirecting to', REDIRECT_URL); // 디버깅용 로그
                 window.location.href = REDIRECT_URL;
             } else {
-                console.log('Code did not match.'); // 디버깅용 로그
 
-                // 비밀번호가 틀린 경우 메시지를 업데이트
+             
                 document.getElementById('top-message').textContent = 'X';
                 document.getElementById('bottom-message').innerHTML = '잘못된 접근입니다.<br>소드 오브 콘발라리아 위키는 더 이상 운영되지 않습니다.';
             }
         }
 
-        // 페이지 로드 후 코드 처리
         logAndRedirectIfValid();
     </script>
 </body>
