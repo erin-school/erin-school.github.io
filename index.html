@@ -176,7 +176,7 @@
         <div class="card" style="background-image: url('./img/sw.PNG');" onclick="handleCardClick('https://soc', true)">
             <div class="card-content">
                 <h3>소드 오브 콘발라리아</h3>
-                <p>더 이상 지원하지 않습니다.<br>(30일 후 카드 삭제)</p>
+                <p>더 이상 지원하지 않습니다.<br>(비공개 전환)</p>
             </div>
         </div>
     </div>
@@ -196,7 +196,7 @@
 
         function handleCardClick(url, showPopup = false) {
             if (showPopup) {
-                const userInput = prompt('더 이상 지원하지 않는 스페이스입니다. 아직 소오콘 커뮤니티를 통해 유입되시는 분들이 계실까봐 임시로 표시해두었으며 30일 후 이 카드는 삭제됩니다.\n\n별도 코드가 있다면 입력해 주세요:');
+                const userInput = prompt('더 이상 공개되지 않는 스페이스입니다. 아직 소오콘 커뮤니티를 통해 유입되시는 분들이 계실까봐 임시로 표시해두었습니다.일정 시간이 지난 후 이 카드는 삭제됩니다.\n\n별도 코드가 있다면 입력해 주세요:');
                 if (userInput) {
                     const encodedInput = toBase64(userInput);
                     const finalUrl = `http://srpg.life/friendcode/?code=${encodedInput}`;
