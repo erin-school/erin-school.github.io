@@ -71,13 +71,9 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="top">
-            X
-        </div>
-        <div class="bottom">
-            잘못된 접근입니다.<br>소드 오브 콘발라리아 위키는 더 이상 운영되지 않습니다.
-        </div>
+    <div class="container" id="message-container">
+        <div class="top" id="top-message">X</div>
+        <div class="bottom" id="bottom-message">잘못된 접근입니다.<br>소드 오브 콘발라리아 위키는 더 이상 운영되지 않습니다.</div>
     </div>
 
     <script>
@@ -95,19 +91,15 @@
             }
         }
 
-        // Base64로 인코딩된 SECRET_CODE
-        const BASE64_SECRET_CODE = 'c3RhcnRnYW1l'; 
+        const BASE64_SECRET_CODE = 'c3RhcnRnYW1l'; // 'startgame'의 Base64 인코딩 값
         const REDIRECT_URL = 'http://soc.srpg.life';
 
-        // URL에서 base64로 인코딩된 코드 가져오기
         const encodedCode = getQueryParameter('code');
         console.log('Encoded Code:', encodedCode); // 디버깅용 로그
-        
-        // Base64로 디코딩한 코드
+
         const decodedCode = decodeBase64(encodedCode);
         console.log('Decoded Code:', decodedCode); // 디버깅용 로그
 
-        // Base64로 디코딩한 SECRET_CODE
         const decodedSecretCode = decodeBase64(BASE64_SECRET_CODE);
         console.log('Decoded SECRET_CODE:', decodedSecretCode); // 디버깅용 로그
 
@@ -117,6 +109,10 @@
             window.location.href = REDIRECT_URL;
         } else {
             console.log('Code did not match.'); // 디버깅용 로그
+
+            // 비밀번호가 틀린 경우 메시지를 업데이트
+            document.getElementById('top-message').textContent = 'X';
+            document.getElementById('bottom-message').innerHTML = '잘못된 접근입니다.<br>소드 오브 콘발라리아 위키는 더 이상 운영되지 않습니다.';
         }
     </script>
 </body>
