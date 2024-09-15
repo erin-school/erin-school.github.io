@@ -95,15 +95,24 @@
             }
         }
 
-        const SECRET_CODE = 'c3RhcnRnYW1l'; // base64로 인코딩된 코드
+        // Base64로 인코딩된 SECRET_CODE
+        const BASE64_SECRET_CODE = 'c3RhcnRnYW1l'; 
         const REDIRECT_URL = 'http://soc.srpg.life';
 
+        // URL에서 base64로 인코딩된 코드 가져오기
         const encodedCode = getQueryParameter('code');
         console.log('Encoded Code:', encodedCode); // 디버깅용 로그
+        
+        // Base64로 디코딩한 코드
         const decodedCode = decodeBase64(encodedCode);
         console.log('Decoded Code:', decodedCode); // 디버깅용 로그
 
-        if (decodedCode === SECRET_CODE) {
+        // Base64로 디코딩한 SECRET_CODE
+        const decodedSecretCode = decodeBase64(BASE64_SECRET_CODE);
+        console.log('Decoded SECRET_CODE:', decodedSecretCode); // 디버깅용 로그
+
+        // 비교
+        if (decodedCode === decodedSecretCode) {
             console.log('Code matched! Redirecting to', REDIRECT_URL); // 디버깅용 로그
             window.location.href = REDIRECT_URL;
         } else {
