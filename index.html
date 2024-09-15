@@ -50,18 +50,17 @@
         }
         .cards-container {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-wrap: wrap; /* 카드들을 여러 줄로 나눌 수 있게 함 */
+            justify-content: center; /* 카드들을 가운데 정렬 */
             gap: 20px;
             padding: 20px;
-            max-width: 1000px; /* 카드 컨테이너의 최대 너비를 줄였습니다 */
-            margin: 0 auto;
+            width: 100%; /* 전체 화면 너비에 맞춤 */
             z-index: 1; /* 카드들을 오버레이 위로 보이게 설정 */
         }
         .card {
             position: relative; /* 카드 내부의 절대 위치 지정 */
             width: 250px; /* 카드 너비를 줄였습니다 */
-            height: 300px; /* 카드 높이를 줄였습니다 */
+            padding-top: 250px; /* 카드의 높이를 너비와 동일하게 설정 */
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1); /* 그림자를 밝게 변경 */
@@ -70,14 +69,6 @@
             background-size: cover; /* 배경 이미지의 사이즈 조정 */
             background-position: center; /* 배경 이미지의 위치 조정 */
             background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
-        }
-        .card-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* 검정색 오버레이 배경 */
         }
         .card-content {
             position: absolute;
@@ -91,6 +82,7 @@
             justify-content: center;
             background: rgba(0, 0, 0, 0.6); /* 불투명 검정색 배경 */
             color: #ffffff; /* 텍스트 색상 흰색으로 변경 */
+            box-sizing: border-box; /* 패딩을 포함하여 높이를 유지 */
         }
         .card-content h3 {
             font-size: 18px; /* 카드 제목의 폰트 크기 조정 */
@@ -109,13 +101,13 @@
         }
         @media (max-width: 768px) {
             .cards-container {
-                flex-direction: column;
+                flex-direction: column; /* 모바일에서는 카드들이 세로로 나열됨 */
                 align-content: center;
                 padding: 0 30px;
             }
             .card {
                 width: 100%;
-                height: auto;
+                padding-top: 100%; /* 높이를 가로와 동일하게 유지 */
             }
         }
         @media (max-width: 991px) {
