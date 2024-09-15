@@ -105,7 +105,10 @@
             const decodedSecretCode = decodeBase64(BASE64_SECRET_CODE);
       
             if (decodedCode === decodedSecretCode) {
+                document.getElementById('top-message').textContent = 'O';
+                document.getElementById('bottom-message').innerHTML = '로딩 중...<br>소드 오브 콘발라리아 위키 비공개 채널에 오신걸 환영합니다.';
                 window.location.href = REDIRECT_URL;
+                
             } else {
 
              
