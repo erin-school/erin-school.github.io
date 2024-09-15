@@ -1,83 +1,173 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>잘못된 접근</title>
+    <title>SRPG Life</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <style>
-        body, html {
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #eaeaea;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            margin: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
-            overflow: hidden; /* 스크롤 제거 */
-        }
-
-        .container {
+            justify-content: center;
+            min-height: 100vh;
             text-align: center;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            width: 80%;
-            max-width: 600px;
-            position: relative;
-            top: -20px; /* Y축에서 중앙보다 조금 더 위로 이동 */
-            padding-top: 40px; /* 이미지가 삽입될 공간을 확보 */
+            color: #ffffff; /* 텍스트를 흰색으로 변경 */
+            overflow: hidden; /* 스크롤바 숨기기 */
         }
-
-        .top {
-            background-color: white;
-            top: 20px;
-            padding: 40px 20px;
-            color: #333;
-            font-size: 120px;
-            font-weight: bold;
-        }
-
-        .bottom {
-            background-color: #f5f5f5;
-            padding: 60px 20px;
-            color: #555;
-            font-size: 18px;
-            font-weight: 400;
-            line-height: 1.6;
-            border-bottom-left-radius: 10px; /* 컨테이너와 동일한 둥근 모서리 적용 */
-            border-bottom-right-radius: 10px;
-        }
-
-        .image-container {
+        .background-video {
             position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 120px;
-            background-color: white;
-            border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .image-container img {
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 50%;
             object-fit: cover;
+            z-index: -1; /* 비디오를 다른 콘텐츠 뒤로 보내기 */
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* 불투명 검정색 오버레이 */
+            z-index: 0; /* 오버레이를 콘텐츠 뒤로 보내기 */
+        }
+        .logo {
+            color: #ffffff; /* 로고 색상 흰색 */
+            font-size: 48px;
+            font-weight: 700;
+            margin-top: 20px;
+            z-index: 1; /* 로고를 오버레이 위로 보이게 설정 */
+        }
+        .description {
+            font-size: 18px;
+            color: #bbbbbb; /* 설명 텍스트 연한 회색으로 변경 */
+            margin-bottom: 20px;
+            margin: 10px;
+            max-width: 800px;
+            padding: 0 14px;
+            z-index: 1; /* 설명 텍스트를 오버레이 위로 보이게 설정 */
+        }
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            z-index: 1; /* 카드들을 오버레이 위로 보이게 설정 */
+        }
+        .card {
+            background: #f8f8f8; /* 카드 배경을 약간 밝은 흰색으로 변경 */
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1); /* 그림자를 밝게 변경 */
+            overflow: hidden;
+            width: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 350px;
+            cursor: pointer; /* 클릭할 수 있음을 나타내는 커서 */
+        }
+        .card-image {
+            position: relative;
+            width: 100%;
+            padding-top: 75%;
+            overflow: hidden;
+        }
+        .card-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .card-content {
+            padding: 10px 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .card-content h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #333333; /* 카드 제목을 진한 회색으로 변경 */
+        }
+        .card-content p {
+            font-size: 14px;
+            color: #555555; /* 카드 설명 텍스트를 중간 회색으로 변경 */
+            margin-bottom: 0;
+            padding: 0 10px; /* 좌우 패딩 추가 */
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(30, 30, 30, 0.2); /* 호버 시 그림자 밝게 변경 */
+        }
+        @media (max-width: 768px) {
+            .cards-container {
+                flex-direction: column;
+                align-content: center;
+                padding: 0 30px;
+            }
+            .card {
+                width: 90%;
+                height: auto;
+            }
+        }
+        @media (max-width: 991px) {
+            .description {
+                font-size: 16px;
+                padding: 0 30px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="top">
-            X
-        </div>
-        <div class="bottom">
-            잘못된 접근입니다.<br>소드 오브 콘발라리아 위키는 더 이상 운영되지 않습니다.
-        </div>
+    <video class="background-video" autoplay muted loop>
+        <source src="mov.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="overlay"></div>
+    <div class="logo">SRPG Life</div>
+    <div class="description">
+        <p>전략 & 전술 게임의 모든 것을 한 곳에서 만나보세요. 거기에 모바일을 살짝 곁드린!</p><br>
     </div>
-</body>
-</html>
+    <div class="cards-container">
+        <div class="card" onclick="handleCardClick('https://afk.srpg.life/')">
+            <div class="card-image">
+                <img src="./dd1.PNG" alt="AFK">
+            </div>
+            <div class="card-content">
+                <h3>AFK: New journey</h3>
+                <p>모두 함께 에스페리아의 영웅들과 세상의 비밀을 파헤치는 여정을 떠나요!</p>
+            </div>
+        </div>
+        <div class="card" onclick="handleCardClick('https://example.com/soc', true)">
+            <div class="card-image">
+                <img src="./soc.jpg" alt="SOC">
+            </div>
+            <div class="card-content">
+                <h3>소드 오브 콘발라리아</h3>
+                <p>더 이상 지원하지 않습니다.<br>(30일 후 카드 삭제)</p>
+            </div>
+        </div>
+        <div class="card" onclick="handleCardClick('https://uo.srpg.life/')">
+            <div class="card-image">
+                <img src="./ov.PNG" alt="OV">
+            </div>
+            <div class="card-content">
+                <h3>Unicorn Overlord</h3>
+                <p>준비 중</p>
+            </div>
