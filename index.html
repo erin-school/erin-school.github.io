@@ -1,215 +1,54 @@
-<!DOCTYPE html>
-<html lang="ko">
+    <!DOCTYPE html>
+<html lang="ko" >
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRPG Life</title>
-    <link rel="icon" type="image/png" href="./img/ck.png">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        body {
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            background-color: #000000; /* 검은색 배경 추가 */
-            color: #000000;
-        }
-        .background-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            transform: scale(1.5);
-            transform-origin: center;
-            color: #000000;
-        }
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 0;
-        }
-        .logo {
-            color: #ffffff;
-            font-size: 48px;
-            font-weight: 700;
-            margin-top: 20px;
-            z-index: 1;
-            text-align: center;
-        }
-        .description {
-            font-size: 18px;
-            color: #bbbbbb;
-            margin-bottom: 20px;
-            margin: 10px;
-            max-width: 600px;
-            padding: 0 14px;
-            z-index: 1;
-            text-align: center;
-        }
-        .cards-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
-            width: 100%;
-            z-index: 1;
-            margin-bottom: 30px; 
-        }
-        .card {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            border-radius: 12px;
-            overflow: hidden;
-            background-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            background-size: cover;
-            background-position: center;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 20%, rgba(0, 0, 0, 0.8) 100%);
-            z-index: 1;
-        }
-        .card-content {
-            position: relative;
-            z-index: 2;
-            padding: 20px;
-            color: #ffffff;
-            text-align: center;
-        }
-        .card-content h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #f9f9f9;
-        }
-        .card-content p {
-            font-size: 14px;
-            color: #dddddd;
-            margin-bottom: 0;
-        }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        @media (max-width: 768px) {
-    .cards-container {
-        flex-direction: column;
-        padding: 0 30px;
-    }
-    .card {
-        width: 100%;
-    }
-    .logo {
-        font-size: 30px; 
-        text-align: left; 
-        margin-left: 27px; 
-        margin-top: 20px;
-        width: calc(100% - 30px);
-    }
-    .description {
-        text-align: left; 
-        font-size: 16px;
-        margin-left: 15px; 
-        width: calc(100% - 30px); 
-    }
-}
-        footer {
-            width: 100%;
-            text-align: center;
-            color: #bbbbbb;
-            padding: 10px 0;
-            font-size: 14px;
-            z-index: 1;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SRPG LIFE</title>
+  <link rel="stylesheet" href="./style.css">
+  
+  <link rel="icon" type="image/png" href="./img/ck.png">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <!-- 배경 비디오 -->
-    <video autoplay muted loop class="background-video">
-        <source src="./mov/afk2.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-
+  <section class="showcase">
+    <header>
+      <h2 class="logo">SRPG LIFE</h2>
+      <div class="toggle"></div>
+    </header>
+    <video src="./mov/afk2.mp4" muted loop autoplay></video>
     <div class="overlay"></div>
-
-    <div class="logo">SRPG Life</div>
-
-    <div class="description">
-        <p>Discover everything about strategy & tactics games in one place. With a touch of mobile on the side!</p><br>
+    <div class="text">
+      <h2>AFK:Journey</h2> 
+      <h2>Korea Wiki</h2>
+      <p>에스페리아의 영웅들과 함께 세상의 비밀을 파헤치는 여정을 떠나세요!<br></p>
+      
+      <a href="#" id="deviceLink">Explore</a><br><br><br>
     </div>
+    <ul class="social">
+    </ul>
+  </section>
 
-    <div class="cards-container">
-        <div class="card" style="background-image: url('./img/doa.PNG');" onclick="handleCardClick('https://afk.srpg.life/')">
-            <div class="card-content">
-                <h3>AFK: New journey</h3>
-                <p>모두 에스페리아의 영웅들과 함께 세상의 비밀을 파헤치는 여정을 떠나세요!</p>
-            </div>
-        </div>
-        <div class="card" style="background-image: url('./img/sw.PNG');" onclick="handleCardClick('https://soc', true)">
-            <div class="card-content">
-                <h3>소드 오브 콘발라리아</h3>
-                <p>더 이상 공개 운영되지 않습니다.<br>(비공개 전환)</p>
-            </div>
-        </div>
-    </div>
+  <script>
+    function isMobileDevice() {
+        return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
 
-    <footer>
-        <p>&copy; 2024 SRPG Life. All rights reserved.</p>
-    </footer>
-
-    <script>
-        function toBase64(str) {
-            return btoa(str);
+    document.addEventListener('DOMContentLoaded', function() {
+        var linkElement = document.getElementById('deviceLink');
+        if (isMobileDevice()) {
+            // 모바일 기기용 링크
+            linkElement.href = "https://afk.srpg.life";
+        } else {
+            // PC용 링크
+            linkElement.href = "https://afk.srpg.life";
         }
+    });
+</script>
+<script  src="./script.js"></script>
 
-        function fromBase64(str) {
-            return atob(str);
-        }
-
-        function handleCardClick(url, showPopup = false) {
-            if (showPopup) {
-                const userInput = prompt('더 이상 공개되지 않는 스페이스입니다. 아직 소오콘 커뮤니티를 통해 유입되시는 분들이 계실까봐 임시로 표시해두었습니다.일정 시간이 지난 후 이 카드는 삭제됩니다.\n\n별도 코드가 있다면 입력하세요:');
-                if (userInput) {
-                    const encodedInput = toBase64(userInput);
-                    const finalUrl = `http://srpg.life/friendcode/?code=${encodedInput}`;
-                    window.location.href = finalUrl;
-                } else {
-                    alert('코드 입력이 취소되었습니다.');
-                }
-            } else {
-                window.location.href = url;
-            }
-        }
-    </script>
 </body>
 </html>
