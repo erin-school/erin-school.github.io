@@ -8,47 +8,49 @@
   <link rel="stylesheet" href="./style.css">
   
   <link rel="icon" type="image/png" href="./img/ck.png">
-  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
-</head>
-<body>
-  <section class="showcase">
-    <header>
-      <h2 class="logo">SRPG LIFE</h2>
-      <div class="toggle"></div>
-    </header>
-    <video src="./mov/afk2.mp4" muted loop autoplay></video>
-    <div class="overlay"></div>
-    <div class="text">
-      <h2>AFK:Journey</h2> 
-      <h2>Korea Wiki</h2>
-      <p>에스페리아의 영웅들과 함께 세상의 비밀을 파헤치는 여정을 떠나세요!<br></p>
-      
-      <a href="#" id="deviceLink">Explore</a><br><br><br>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <section class="showcase">
+      <header>
+        <h2 class="logo">SRPG LIFE</h2>
+        <div class="toggle"></div>
+      </header>
+      <video src="./mov/afk2.mp4" muted loop autoplay></video>
+      <div class="overlay"></div>
+      <div class="text">
+        <h2>AFK:Journey</h2> 
+        <h3>Korea Wiki</h3>
+        <p>에스페리아의 영웅들과 함께 세상의 비밀을 파헤치는 여정을 떠나세요!<br></p>
+        
+        <a href="#" id="deviceLink">Explore</a><br><br><br>
+      </div>
+
+    </section>
+    <div class="menu">
+      <ul>
+        <li><a href="https://docs.google.com/spreadsheets/d/10hgQV4NYS9jQop7nt95cem-_2jVWWxjrht-4HKHanRY/pubhtml">Mobile Wiki</a></li>
+        <li><a href="https://docs.google.com/spreadsheets/d/1QhHTl6G7--4Jq6baQs3PURrQkH6WEXw2udxDt29g6Z8/pubhtml">PC Wiki</a></li>
+        <li><a href="./gacha.html">Gacha</a></li>
+      </ul>
     </div>
-    <ul class="social">
-    </ul>
-  </section>
-
-  <script>
-    function isMobileDevice() {
-        return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var linkElement = document.getElementById('deviceLink');
-        if (isMobileDevice()) {
-            // 모바일 기기용 링크
-            linkElement.href = "https://afk.srpg.life";
-        } else {
-            // PC용 링크
-            linkElement.href = "https://afk.srpg.life";
-        }
-    });
-</script>
-<script  src="./script.js"></script>
-
-</body>
-</html>
+    <script>
+      function isMobileDevice() {
+          return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+          var linkElement = document.getElementById('deviceLink');
+          if (isMobileDevice()) {
+              // 모바일 기기용 링크
+              linkElement.href = "https://afk.srpg.life/";
+          } else {
+              // PC용 링크
+              linkElement.href = "https://afk.srpg.life/";
+          }
+      });
+  </script>
+  <script  src="./script.js"></script>
+  </body>
+  </html>
