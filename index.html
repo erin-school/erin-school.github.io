@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>마비노기 감성 실시간 텍스트 변환</title>
   <script src="https://unpkg.com/hangul-js"></script>
   <style>
@@ -47,6 +47,7 @@
       color: #3b2f2f;
       margin-bottom: 20px;
       box-sizing: border-box;
+      white-space: pre-wrap;
     }
 
     textarea:focus {
@@ -82,6 +83,9 @@
       border: 2px dashed #d5cdb9;
       border-radius: 12px;
       background: #fffef7;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 150px;
     }
 
     canvas {
@@ -93,14 +97,14 @@
   <div class="container">
     <h1>마비노기 에린어 번역</h1>
     <textarea id="textInput" rows="4" placeholder="예: 밀레시안, 환생, 로나와 판 등 입력하세요"></textarea>
-    <br>
+    <br />
     <button class="button" onclick="downloadImage()">이미지 저장</button>
 
     <!-- 실시간 출력 -->
     <div id="convertedOutput" class="output-text">여기에 출력됩니다</div>
 
     <!-- 캔버스 (이미지 저장용) -->
-    <canvas id="outputCanvas" width="800" height="200"></canvas>
+    <canvas id="outputCanvas"></canvas>
   </div>
 
   <script>
@@ -124,21 +128,84 @@
       outputDiv.textContent = converted || '여기에 출력됩니다';
     });
 
+    // 캔버스에 자동 줄바꿈하여 텍스트 출력하는 함수
+    function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+      const chars = text.split('');
+      let line = '';
+      const lines = [];
+
+      for (let i = 0; i < chars.length; i++) {
+        const testLine = line + chars[i];
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && line !== '') {
+          lines.push(line);
+          line = chars[i];
+        } else {
+          line = testLine;
+        }
+      }
+      if (line) lines.push(line);
+
+      lines.forEach((lineText, idx) => {
+        ctx.fillText(lineText, x, y + idx * lineHeight);
+      });
+
+      return lines.length;
+    }
+
     async function downloadImage() {
       const canvas = document.getElementById('outputCanvas');
       const ctx = canvas.getContext('2d');
-      const text = outputDiv.textContent;
+      const text = outputDiv.textContent.trim();
+
+      if (!text) {
+        alert('텍스트를 입력하세요!');
+        return;
+      }
 
       await document.fonts.load('48px MM_inn');
 
+      const maxWidth = 700; // 최대 텍스트 너비(px)
+      const lineHeight = 60;
+
+      ctx.font = '48px MM_inn';
+
+      // 자동 줄바꿈을 위해 텍스트 길이와 줄 수 계산
+      const chars = text.split('');
+      let line = '';
+      const lines = [];
+
+      for (let i = 0; i < chars.length; i++) {
+        const testLine = line + chars[i];
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && line !== '') {
+          lines.push(line);
+          line = chars[i];
+        } else {
+          line = testLine;
+        }
+      }
+      if (line) lines.push(line);
+
+      // 캔버스 크기 설정
+      canvas.width = maxWidth + 100;
+      canvas.height = lines.length * lineHeight + 40;
+
+      // 배경 초기화
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#fff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      // 텍스트 출력
       ctx.fillStyle = '#000';
+      ctx.textBaseline = 'top';
       ctx.font = '48px MM_inn';
-      ctx.fillText(text, 50, 100);
 
+      lines.forEach((lineText, idx) => {
+        ctx.fillText(lineText, 50, 20 + idx * lineHeight);
+      });
+
+      // 이미지 저장
       const link = document.createElement('a');
       link.download = 'mabinogi-text.png';
       link.href = canvas.toDataURL();
