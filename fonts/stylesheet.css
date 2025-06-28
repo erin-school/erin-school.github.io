@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'MM_inn';
+    src: url('MM_inn.woff2') format('woff2'),
+        url('MM_inn.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
