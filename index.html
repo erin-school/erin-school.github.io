@@ -2,60 +2,145 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>텍스트 이미지 생성기</title>
+  <title>마비노기 감성 실시간 텍스트 변환</title>
+  <script src="https://unpkg.com/hangul-js"></script>
   <style>
     @font-face {
       font-family: 'MM_inn';
-      src: url('fonts/MM_inn.woff2') format('woff2'),
-           url('fonts/MM_inn.woff') format('woff');
+      src: url('fonts/MM_inn.woff2') format('woff2');
     }
 
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
+      font-family: 'Nanum Myeongjo', serif;
+      background: #f5f3e7 url('https://mabinogi.nexon.com/img/common/bg/bg_body.jpg') repeat;
+      color: #3b2f2f;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
     }
 
-    #output {
-      margin-top: 20px;
-      border: 1px solid #ccc;
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 3px solid #d5cdb9;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(100, 80, 50, 0.2);
+    }
+
+    h1 {
+      font-family: 'Maplestory Bold', 'Nanum Myeongjo', serif;
+      color: #5e4a2d;
+      text-shadow: 1px 1px 0 #e8e1cf;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #cbbca1;
+      border-radius: 10px;
+      background: #fffef7;
+      font-family: 'Nanum Gothic', sans-serif;
+      font-size: 16px;
+      color: #3b2f2f;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #8d7b5f;
+      box-shadow: 0 0 6px rgba(141, 123, 95, 0.3);
+    }
+
+    .button {
+      background: linear-gradient(#e5dcc2, #c5bfa6);
+      color: #3b2f2f;
+      border: 2px solid #b2a58a;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: 'Maplestory Light', serif;
+      transition: all 0.2s ease-in-out;
+      margin-right: 10px;
+    }
+
+    .button:hover {
+      background: linear-gradient(#f5eecf, #d4ccb0);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .output-text {
+      font-family: 'MM_inn', monospace;
+      font-size: 48px;
+      text-align: center;
+      margin-top: 30px;
+      padding: 20px;
+      border: 2px dashed #d5cdb9;
+      border-radius: 12px;
+      background: #fffef7;
+    }
+
+    canvas {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h2>텍스트를 MM_inn 폰트로 이미지로 만들기</h2>
-  <textarea id="textInput" rows="4" cols="40" placeholder="여기에 텍스트를 입력하세요"></textarea><br>
-  <button onclick="renderText()">이미지로 만들기</button>
-  <br><br>
-  <canvas id="output" width="800" height="200"></canvas>
-  <br>
-  <button onclick="downloadImage()">이미지 다운로드</button>
+  <div class="container">
+    <h1>마비노기 에린어 번역</h1>
+    <textarea id="textInput" rows="4" placeholder="예: 밀레시안, 환생, 로나와 판 등 입력하세요"></textarea>
+    <br>
+    <button class="button" onclick="downloadImage()">이미지 저장</button>
+
+    <!-- 실시간 출력 -->
+    <div id="convertedOutput" class="output-text">여기에 출력됩니다</div>
+
+    <!-- 캔버스 (이미지 저장용) -->
+    <canvas id="outputCanvas" width="800" height="200"></canvas>
+  </div>
 
   <script>
-    async function renderText() {
-      const canvas = document.getElementById('output');
-      const ctx = canvas.getContext('2d');
-      const text = document.getElementById('textInput').value;
+    const hangeulToEng = {
+      'ㅂ':'q','ㅈ':'w','ㄷ':'e','ㄱ':'r','ㅅ':'t','ㅛ':'y','ㅕ':'u','ㅑ':'i','ㅐ':'o','ㅔ':'p',
+      'ㅁ':'a','ㄴ':'s','ㅇ':'d','ㄹ':'f','ㅎ':'g','ㅗ':'h','ㅓ':'j','ㅏ':'k','ㅣ':'l',
+      'ㅋ':'z','ㅌ':'x','ㅊ':'c','ㅍ':'v','ㅠ':'b','ㅜ':'n','ㅡ':'m'
+    };
 
-      // 폰트 로드 대기 (중요!)
-      await document.fonts.load('20px "MM_inn"');
-
-      // 캔버스 클리어
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // 배경색 (선택사항)
-      ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // 폰트 스타일 적용
-      ctx.fillStyle = 'black';
-      ctx.font = '48px MM_inn';
-      ctx.fillText(text, 50, 100); // 위치 조정 가능
+    function hangulToKeyboardInput(input) {
+      const decomposed = window.Hangul.disassemble(input, true);
+      return decomposed.map(syll => syll.map(char => hangeulToEng[char] || char).join('')).join('');
     }
 
-    function downloadImage() {
-      const canvas = document.getElementById('output');
+    const textarea = document.getElementById('textInput');
+    const outputDiv = document.getElementById('convertedOutput');
+
+    textarea.addEventListener('input', () => {
+      const input = textarea.value;
+      const converted = hangulToKeyboardInput(input);
+      outputDiv.textContent = converted || '여기에 출력됩니다';
+    });
+
+    async function downloadImage() {
+      const canvas = document.getElementById('outputCanvas');
+      const ctx = canvas.getContext('2d');
+      const text = outputDiv.textContent;
+
+      await document.fonts.load('48px MM_inn');
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#000';
+      ctx.font = '48px MM_inn';
+      ctx.fillText(text, 50, 100);
+
       const link = document.createElement('a');
-      link.download = 'text_image.png';
+      link.download = 'mabinogi-text.png';
       link.href = canvas.toDataURL();
       link.click();
     }
