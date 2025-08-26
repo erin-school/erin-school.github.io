@@ -242,30 +242,44 @@ function getPityIncrement(lv, usedCatalyst) {
     const usedCatalyst = catalystCheckbox.checked;
     const roll = Math.random() * 100;
 
-    // 강화 시 재화 소비
+    // 재화 소비
     totalRune += runeCost[level];
     totalGold += goldCost[level];
     if (usedCatalyst) totalCatalyst += catalystCost[level];
 
-    // 애니메이션 제거 + 강제로 reflow
+    // 애니메이션 제거 + reflow
     itemImg.classList.remove("success-anim", "fail-anim");
-    void itemImg.offsetWidth; // 브라우저에 강제로 재flow 발생
+    void itemImg.offsetWidth;
 
-    // 성공 조건: 확률 성공 OR 천장
-    if (roll < baseChance || pity >= 100) {
+    if (roll < baseChance || pity >= 100) { // 성공
         level++;
         pity = 0; // 천장 초기화
-        itemImg.classList.add("success-anim"); // 성공 애니메이션 적용
+        itemImg.src = "2.png"; // 성공 이미지
+        itemImg.classList.add("success-anim");
         updateUI("success");
-        return; // 성공 후 즉시 종료
+
+        // 0.5초 후 기본 이미지로 복귀
+        setTimeout(() => {
+            itemImg.src = "1.png";
+            itemImg.classList.remove("success-anim");
+        }, 500);
+
+        return;
     }
 
-    // 실패 시
-    pity += getPityIncrement(level, catalystCheckbox.checked);
-if(pity > 100) pity = 100;
+    // 실패
+    pity += getPityIncrement(level, usedCatalyst);
+    if (pity > 100) pity = 100;
 
-    itemImg.classList.add("fail-anim"); // 실패 애니메이션 적용
+    itemImg.src = "3.png"; // 실패 이미지
+    itemImg.classList.add("fail-anim");
     updateUI("fail");
+
+    // 0.5초 후 기본 이미지로 복귀
+    setTimeout(() => {
+        itemImg.src = "1.png";
+        itemImg.classList.remove("fail-anim");
+    }, 500);
 });
 
     updateUI();
