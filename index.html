@@ -1,216 +1,273 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>[마비노기] 에린어 번역기</title>
-  <script src="https://unpkg.com/hangul-js"></script>
+  <meta charset="UTF-8">
+  <title>손이 또 미끄러졌네</title>
   <style>
-    @font-face {
-      font-family: 'MM_inn';
-      src: url('fonts/MM_inn.woff2') format('woff2');
-    }
-
     body {
-      font-family: 'Nanum Myeongjo', serif;
-      background: #f5f3e7 url('https://mabinogi.nexon.com/img/common/bg/bg_body.jpg') repeat;
-      color: #3b2f2f;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 40px auto;
+      font-family: 'Arial', sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
       padding: 30px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 3px solid #d5cdb9;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(100, 80, 50, 0.2);
+      margin: 0;
     }
 
-    h1 {
-      font-family: 'Maplestory Bold', 'Nanum Myeongjo', serif;
-      color: #5e4a2d;
-      text-shadow: 1px 1px 0 #e8e1cf;
-      text-align: center;
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 90%;
+      max-width: 400px;
     }
 
-    textarea {
+    .layer {
       width: 100%;
-      padding: 10px;
-      border: 2px solid #cbbca1;
+      background: #fff;
       border-radius: 10px;
-      background: #fffef7;
-      font-family: 'Nanum Gothic', sans-serif;
-      font-size: 16px;
-      color: #3b2f2f;
-      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0;
+    }
+
+    .item-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #000;
+    }
+
+    .item-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .level-display {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      padding: 4px 8px;
+      font-weight: bold;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .info-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-weight: bold;
+      color: #333;
+      font-size: 14px;
+      width: 100%;
+      padding: 15px;
       box-sizing: border-box;
-      white-space: pre-wrap;
     }
 
-    textarea:focus {
-      outline: none;
-      border-color: #8d7b5f;
-      box-shadow: 0 0 6px rgba(141, 123, 95, 0.3);
+    .info-box input[type="checkbox"] {
+      transform: scale(1.2);
+      margin-right: 5px;
     }
 
-    .button {
-      background: linear-gradient(#e5dcc2, #c5bfa6);
-      color: #3b2f2f;
-      border: 2px solid #b2a58a;
-      padding: 10px 20px;
+    .pity-bar-container {
+      width: 100%;
+      height: 16px;
+      background: #eee;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .pity-bar {
+      height: 100%;
+      width: 0%;
+      background: #444;
+      transition: width 0.3s ease;
+    }
+
+    .button-box button {
+      width: 100%;
+      border: 1px solid #333;
+      padding: 12px 0;
       font-size: 16px;
-      border-radius: 12px;
       cursor: pointer;
-      font-family: 'Maplestory Light', serif;
-      transition: all 0.2s ease-in-out;
-      margin-right: 10px;
+      background: #fff;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: all 0.2s ease;
     }
 
-    .button:hover {
-      background: linear-gradient(#f5eecf, #d4ccb0);
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    .button-box button:hover {
+      background: #f0f0f0;
     }
 
-    .output-text {
-      font-family: 'MM_inn', monospace;
-      font-size: 48px;
-      text-align: center;
-      margin-top: 30px;
-      padding: 20px;
-      border: 2px dashed #d5cdb9;
-      border-radius: 12px;
-      background: #fffef7;
-      white-space: pre-wrap;
-      word-break: break-word;
-      min-height: 150px;
+    .button-box button:active {
+      transform: translateY(1px);
     }
 
-    canvas {
-      display: none;
+    .success-anim {
+      animation: successAnim 0.5s ease;
     }
+
+    @keyframes successAnim {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.2); }
+      50% { transform: scale(0.9); }
+      75% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .fail-anim {
+      animation: failAnim 0.5s ease;
+    }
+
+    @keyframes failAnim {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      50% { transform: rotate(10deg); }
+      75% { transform: rotate(-5deg); }
+      100% { transform: rotate(0deg); }
+    }
+
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>에린어 번역기</h1>
-    <textarea id="textInput" rows="4" placeholder="예: 밀레시안, 환생, 로나와 판 등 입력하세요"></textarea>
-    <br />
-    <button class="button" onclick="downloadImage()">이미지 저장</button>
 
-    <!-- 실시간 출력 -->
-    <div id="convertedOutput" class="output-text">여기에 출력됩니다</div>
+  <div class="game-container">
+    <div class="layer item-box">
+      <img id="itemImg" src="1.png" alt="아이템">
+      <div class="level-display" id="itemLevel">+10강</div>
+    </div>
 
-    <!-- 캔버스 (이미지 저장용) -->
-    <canvas id="outputCanvas"></canvas>
+    <div class="layer info-box">
+      <div id="chance">강화 확률: 5%</div>
+      <label>
+        <input type="checkbox" id="catalyst"> 촉매제 사용
+      </label>
+      <div>
+        천장 수치: <span id="pityValue">0%</span>
+        <div class="pity-bar-container">
+          <div id="pityBar" class="pity-bar"></div>
+        </div>
+      </div>
+      <div>
+        파편 <span id="runeCount">0</span>개 / 촉매제 <span id="catalystCount">0</span>개 / <span id="goldCount">0</span>골드
+      </div>
+    </div>
+
+    <div class="layer button-box">
+      <button id="upgradeBtn">강화하기 버튼</button>
+    </div>
   </div>
 
   <script>
-    const hangeulToEng = {
-      'ㅂ':'q','ㅈ':'w','ㄷ':'e','ㄱ':'r','ㅅ':'t','ㅛ':'y','ㅕ':'u','ㅑ':'i','ㅐ':'o','ㅔ':'p',
-      'ㅁ':'a','ㄴ':'s','ㅇ':'d','ㄹ':'f','ㅎ':'g','ㅗ':'h','ㅓ':'j','ㅏ':'k','ㅣ':'l',
-      'ㅋ':'z','ㅌ':'x','ㅊ':'c','ㅍ':'v','ㅠ':'b','ㅜ':'n','ㅡ':'m'
-    };
+    let level = 10; 
+    const maxLevel = 20;
+    let pity = 0;
 
-    function hangulToKeyboardInput(input) {
-      const decomposed = window.Hangul.disassemble(input, true);
-      return decomposed.map(syll => syll.map(char => hangeulToEng[char] || char).join('')).join('');
+    let totalRune = 0;
+    let totalGold = 0;
+    let totalCatalyst = 0;
+
+    const itemLevel = document.getElementById("itemLevel");
+    const chanceDisplay = document.getElementById("chance");
+    const upgradeBtn = document.getElementById("upgradeBtn");
+    const itemImg = document.getElementById("itemImg");
+    const catalystCheckbox = document.getElementById("catalyst");
+    const pityValue = document.getElementById("pityValue");
+    const pityBar = document.getElementById("pityBar");
+    const runeCount = document.getElementById("runeCount");
+    const goldCount = document.getElementById("goldCount");
+    const catalystCount = document.getElementById("catalystCount");
+
+    const runeCost = [0,0,0,0,0,0,0,0,0,0,344,361,560,846,1207,1375,2407,3094,4125,8251];
+    const goldCost = [0,0,0,0,0,0,0,0,0,0,110013,115513,179321,270631,386145,440051,770089,990115,132153,2640305];
+    const catalystCost = [0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,9,9,9,9,9];
+
+    function getChance(lv) {
+  if (lv < 10) return 100;
+  if (lv === 10) return 15;
+  if (lv === 11) return 10;
+  if (lv === 12) return 7;
+  if (lv === 13) return 5;
+  if (lv === 14) return 3;
+  return 1; // 15강 이상
+}
+
+function getPityIncrement(lv, usedCatalyst) {
+  const chance = getChance(lv);
+  if(lv < 10) return 0; // 10강 이하 천장 없음
+  if(usedCatalyst) return chance / 2; // 촉매제 사용 시 현재 확률의 절반
+  return chance / 2; // 촉매제 미사용 시도도 절반? 아니면 기존 로직대로 낮게
+}
+
+    function updateUI(state="default") {
+      itemLevel.textContent = `+${level}강`;
+
+      if(state === "default") itemImg.src = "1.png";
+      else if(state === "success") itemImg.src = "2.png";
+      else if(state === "fail") itemImg.src = "3.png";
+
+      if (level >= maxLevel) {
+        chanceDisplay.textContent = "최대 강화 단계 도달!";
+        upgradeBtn.disabled = true;
+      } else {
+        chanceDisplay.textContent = `강화 확률: ${getChance(level)}%`;
+      }
+
+      pityValue.textContent = Math.floor(pity) + "%";
+      pityBar.style.width = pity + "%";
+
+      runeCount.textContent = totalRune;
+      goldCount.textContent = totalGold;
+      catalystCount.textContent = totalCatalyst;
     }
 
-    const textarea = document.getElementById('textInput');
-    const outputDiv = document.getElementById('convertedOutput');
+    upgradeBtn.addEventListener("click", () => {
+    if (level >= maxLevel) return;
 
-    textarea.addEventListener('input', () => {
-      const input = textarea.value;
-      const converted = hangulToKeyboardInput(input);
-      outputDiv.textContent = converted || '여기에 출력됩니다';
-    });
+    const baseChance = getChance(level);
+    const usedCatalyst = catalystCheckbox.checked;
+    const roll = Math.random() * 100;
 
-    // 캔버스에 자동 줄바꿈하여 텍스트 출력하는 함수
-    function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
-      const chars = text.split('');
-      let line = '';
-      const lines = [];
+    // 강화 시 재화 소비
+    totalRune += runeCost[level];
+    totalGold += goldCost[level];
+    if (usedCatalyst) totalCatalyst += catalystCost[level];
 
-      for (let i = 0; i < chars.length; i++) {
-        const testLine = line + chars[i];
-        const metrics = ctx.measureText(testLine);
-        if (metrics.width > maxWidth && line !== '') {
-          lines.push(line);
-          line = chars[i];
-        } else {
-          line = testLine;
-        }
-      }
-      if (line) lines.push(line);
+    // 애니메이션 제거 + 강제로 reflow
+    itemImg.classList.remove("success-anim", "fail-anim");
+    void itemImg.offsetWidth; // 브라우저에 강제로 재flow 발생
 
-      lines.forEach((lineText, idx) => {
-        ctx.fillText(lineText, x, y + idx * lineHeight);
-      });
-
-      return lines.length;
+    // 성공 조건: 확률 성공 OR 천장
+    if (roll < baseChance || pity >= 100) {
+        level++;
+        pity = 0; // 천장 초기화
+        itemImg.classList.add("success-anim"); // 성공 애니메이션 적용
+        updateUI("success");
+        return; // 성공 후 즉시 종료
     }
 
-    async function downloadImage() {
-      const canvas = document.getElementById('outputCanvas');
-      const ctx = canvas.getContext('2d');
-      const text = outputDiv.textContent.trim();
+    // 실패 시
+    pity += getPityIncrement(level, usedCatalyst);
+    if (pity > 100) pity = 100;
 
-      if (!text) {
-        alert('텍스트를 입력하세요!');
-        return;
-      }
+    itemImg.classList.add("fail-anim"); // 실패 애니메이션 적용
+    updateUI("fail");
+});
 
-      await document.fonts.load('48px MM_inn');
-
-      const maxWidth = 700; // 최대 텍스트 너비(px)
-      const lineHeight = 60;
-
-      ctx.font = '48px MM_inn';
-
-      // 자동 줄바꿈을 위해 텍스트 길이와 줄 수 계산
-      const chars = text.split('');
-      let line = '';
-      const lines = [];
-
-      for (let i = 0; i < chars.length; i++) {
-        const testLine = line + chars[i];
-        const metrics = ctx.measureText(testLine);
-        if (metrics.width > maxWidth && line !== '') {
-          lines.push(line);
-          line = chars[i];
-        } else {
-          line = testLine;
-        }
-      }
-      if (line) lines.push(line);
-
-      // 캔버스 크기 설정
-      canvas.width = maxWidth + 100;
-      canvas.height = lines.length * lineHeight + 40;
-
-      // 배경 초기화
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // 텍스트 출력
-      ctx.fillStyle = '#000';
-      ctx.textBaseline = 'top';
-      ctx.font = '48px MM_inn';
-
-      lines.forEach((lineText, idx) => {
-        ctx.fillText(lineText, 50, 20 + idx * lineHeight);
-      });
-
-      // 이미지 저장
-      const link = document.createElement('a');
-      link.download = 'mabinogi-text.png';
-      link.href = canvas.toDataURL();
-      link.click();
-    }
+    updateUI();
   </script>
+
 </body>
 </html>
