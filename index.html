@@ -207,10 +207,10 @@
 }
 
 function getPityIncrement(lv, usedCatalyst) {
-  const chance = getChance(lv);
-  if(lv < 10) return 0; // 10강 이하 천장 없음
-  if(usedCatalyst) return chance / 2; // 촉매제 사용 시 현재 확률의 절반
-  return chance / 2; // 촉매제 미사용 시도도 절반? 아니면 기존 로직대로 낮게
+    const chance = getChance(lv);
+    if(lv < 10) return 0;          // 10강 이하 천장 없음
+    if(usedCatalyst) return chance; // 촉매제 사용 시 현재 확률 전체
+    return chance / 2;             // 미사용 시 절반
 }
 
     function updateUI(state="default") {
@@ -261,8 +261,8 @@ function getPityIncrement(lv, usedCatalyst) {
     }
 
     // 실패 시
-    pity += getPityIncrement(level, usedCatalyst);
-    if (pity > 100) pity = 100;
+    pity += getPityIncrement(level, catalystCheckbox.checked);
+if(pity > 100) pity = 100;
 
     itemImg.classList.add("fail-anim"); // 실패 애니메이션 적용
     updateUI("fail");
