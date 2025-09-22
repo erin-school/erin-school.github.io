@@ -228,11 +228,10 @@ function showEnhancedLevel() {
     }
   }
 
-  if(level == 15){
-    defaultlv = 14;
-  }else{
-    defaultlv = level-2;
-  }
+
+
+defaultlv = level-2;
+
 
   let chart8Value = chart[8][defaultlv];
   let chart8Percent = (consumedResource / chart8Value) * 100;
