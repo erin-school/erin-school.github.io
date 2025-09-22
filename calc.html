@@ -9,64 +9,112 @@
       margin: 20px;
       background: #f7f7fb;
     }
+
     .card {
       background: #fff;
-      padding: 18px;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(20,20,60,0.06);
+      padding: 25px 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(20,20,60,0.08);
       max-width: 880px;
-      margin: 0 auto;
+      margin: 0 auto 20px auto;
     }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 20px;
+      color: #1a1a1a;
+      text-align: center;
+    }
+
     label {
       display: block;
-      margin-top: 10px;
+      margin-top: 15px;
       font-weight: 600;
+      color: #333;
     }
+
     input, select {
-      padding: 8px 10px;
+      padding: 10px 12px;
       margin-top: 6px;
       border-radius: 8px;
-      border: 1px solid #ddd;
-      width: 160px;
+      border: 1px solid #ccc;
+      width: 180px;
+      font-size: 14px;
+      transition: 0.2s border-color;
     }
+
+    input:focus {
+      outline: none;
+      border-color: #2f6bf6;
+    }
+
     button {
-      margin-top: 12px;
-      padding: 8px 14px;
-      border-radius: 10px;
+      margin-top: 18px;
+      padding: 10px 16px;
+      border-radius: 12px;
       border: 0;
       background: #2f6bf6;
       color: #fff;
+      font-size: 15px;
       cursor: pointer;
+      transition: 0.2s background;
     }
-    .result {
-      margin-top: 18px;
-      padding: 12px;
-      border-radius: 8px;
-      background: #fbfbff;
-      border: 1px solid #eef;
+
+    button:hover {
+      background: #2551c9;
     }
-    table {
+
+    /* 결과 카드 스타일 */
+    .result-card {
+      background: #f9f9ff;
+      border: 1px solid #e0e0f0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .result-card h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #2f6bf6;
+      margin: 10px 0;
+    }
+
+    .progress-container {
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
+      background-color: #e0e0f0;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 10px;
+      height: 18px;
     }
-    th, td {
-      padding: 6px 8px;
-      border: 1px solid #eee;
-      text-align: right;
+
+    .progress-bar {
+      height: 100%;
+      background-color: #2f6bf6;
+      width: 0%;
+      transition: width 0.3s ease-in-out;
     }
-    th {
-      background: #fafafa;
-    }
-    .muted {
-      color: #666;
-      font-size: 13px;
+
+    @media (max-width: 600px) {
+      input, select {
+        width: calc(100% - 24px);
+        box-sizing: border-box;
+      }
+      .card {
+        padding: 20px;
+      }
+      .result-card h2 {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>강화 비교기</h1>
+    <h1>강포 계산기</h1>
     <label>
       강화 수치 (1~20):
       <input type="text" id="levelInput">
@@ -78,13 +126,13 @@
     </label>
 
     <button onclick="showEnhancedLevel()">확인</button>
+  </div>
 
-    <div class="result">
-      <p id="enhancedValue"></p>
-      <p id="enhancedLevel"></p>
-      <p id="chart6Value"></p>
-      <p id="chart8Value"></p>
-      <p id="chart8Percent"></p>
+  <div class="result-card">
+    <h2 id="enhancedLevel">-강</h2>
+    <div id="chart8PercentText" style="font-size:16px;color:#555;">0%</div>
+    <div class="progress-container">
+      <div id="progressBar" class="progress-bar"></div>
     </div>
   </div>
 
@@ -107,14 +155,10 @@ function showEnhancedLevel() {
   const nextValue6 = chart[6][level] || baseValue6;
   const diff6 = nextValue6 - baseValue6;
 
-  // 소모 재화 계산
   const consumedResource = baseValue6 + diff6 * (point / 100);
 
-  document.getElementById("enhancedValue").innerText =
-    "소모 재화: " + consumedResource.toFixed(2);
-
-  // chart[8]과 비교하여 넘어선 강화 수치 찾기
   let surpassedLevel = 0;
+  let defaultlv=0;
   for (let idx = level - 1; idx >= 0; idx--) {
     if (consumedResource >= chart[8][idx]) {
       surpassedLevel = idx + 1;
@@ -122,18 +166,19 @@ function showEnhancedLevel() {
     }
   }
 
-  document.getElementById("enhancedLevel").innerText =
-    "넘어선 값은 " + surpassedLevel + "강 입니다.";
+  if(level == 15){
+    defaultlv = 14;
+  }else {
+    defaultlv = level-2;
+  }
 
-  // 선택된 chart[6], chart[8] 값 표시
-  document.getElementById("chart6Value").innerText = "선택한 chart[6] 값: " + baseValue6;
-  document.getElementById("chart8Value").innerText = "선택한 chart[8] 값: " + chart[8][level - 1];
+  let chart8Value = chart[8][defaultlv];
+  let chart8Percent = (consumedResource / chart8Value) * 100;
+  if(chart8Percent > 100) chart8Percent = chart8Percent-100;
 
-  // chart[8] 기준 퍼센트 계산
-  const chart8Value = chart[8][level - 1];
-  const chart8Percent = (consumedResource / chart8Value) * 100;
-  document.getElementById("chart8Percent").innerText =
-    "chart[8] 기준 퍼센트: " + chart8Percent.toFixed(2) + "%";
+  document.getElementById("enhancedLevel").innerText = surpassedLevel + "강";
+  document.getElementById("chart8PercentText").innerText = chart8Percent.toFixed(2) + "%";
+  document.getElementById("progressBar").style.width = chart8Percent + "%";
 }
 </script>
 </body>
