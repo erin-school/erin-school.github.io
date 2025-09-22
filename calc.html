@@ -116,15 +116,7 @@ function compute(level, point){
   let absolutePercent = (nextValue > 0) ? (consumed / nextValue) * 100 : 0;
 
   // ✅ 안정화된 displayPercent
-let displayPercent;
-// 구간 내부라도, consumed가 이미 구간 상위에 가까우면 absolutePercent 사용
-if(consumed >= nextValue || absolutePercent > 50){
-    displayPercent = absolutePercent;
-}else if(consumed <= prevValue){
-    displayPercent = 0;
-}else{
-    displayPercent = relativePercent;
-}
+let displayPercent = relativePercent;
 
 
   const prevBreakPointPct = (diff6 !== 0) ? ((prevValue - base6) / diff6) * 100 : NaN;
