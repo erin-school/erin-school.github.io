@@ -1,10 +1,9 @@
 <!doctype html>
 <html lang="ko">
-
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>강화 비교</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
@@ -18,14 +17,27 @@
       border-radius: 16px;
       box-shadow: 0 8px 20px rgba(20,20,60,0.08);
       max-width: 880px;
-      margin: 0 auto 20px auto;
+      margin: 0 auto;
     }
 
-    h1 {
-      font-size: 26px;
+    /* 상단 타이틀 + 이미지 */
+    .title-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       margin-bottom: 20px;
+    }
+
+    .title-container h1 {
+      font-size: 26px;
+      margin: 0;
       color: #1a1a1a;
-      text-align: center;
+    }
+
+    .title-container img {
+      width: 32px;
+      height: 32px;
     }
 
     label {
@@ -66,39 +78,78 @@
       background: #2551c9;
     }
 
-    /* 결과 카드 스타일 */
-    .result-card {
+    .result {
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 12px;
       background: #f9f9ff;
       border: 1px solid #e0e0f0;
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 20px;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     }
 
-    .result-card h2 {
+    /* n강 카드 */
+    #enhancedLevel {
+      background: #fff;
+      border: 1px solid #2f6bf6;
+      color: #2f6bf6;
       font-size: 28px;
       font-weight: 700;
-      color: #2f6bf6;
-      margin: 10px 0;
-    }
-
-    .progress-container {
-      width: 100%;
-      background-color: #e0e0f0;
+      padding: 12px 20px;
       border-radius: 12px;
-      overflow: hidden;
-      margin-top: 10px;
-      height: 18px;
+      margin-bottom: 12px;
     }
 
-    .progress-bar {
-      height: 100%;
-      background-color: #2f6bf6;
-      width: 0%;
-      transition: width 0.3s ease-in-out;
+    /* n% 카드 */
+    #chart8Percent {
+      background: #2f6bf6;
+      color: #fff;
+      font-size: 28px;
+      font-weight: 700;
+      padding: 12px 20px;
+      border-radius: 12px;
+      margin-bottom: 12px;
     }
+
+    /* 프로그레스 바 */
+    .progress-container {
+      background: #e0e0f0;
+      border-radius: 12px;
+      width: 100%;
+      height: 20px;
+      overflow: hidden;
+    }
+
+.progress-container {
+  background: #e0e0f0;
+  border-radius: 12px;
+  width: 100%;
+  height: 20px;
+  overflow: hidden;
+  position: relative; /* 절대 위치를 위한 기준 */
+}
+
+.progress-bar {
+  height: 100%;
+  background: #2f6bf6;
+  width: 0%;
+  border-radius: 12px;
+  transition: width 0.3s;
+}
+
+/* 중앙 레이어용 */
+.progress-text {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
+  line-height: 20px; /* progress-container 높이와 동일 */
+  font-weight: 700;
+  color: #fff;
+}
+
+
 
     @media (max-width: 600px) {
       input, select {
@@ -108,17 +159,22 @@
       .card {
         padding: 20px;
       }
-      .result-card h2 {
+      #enhancedLevel, #chart8Percent {
         font-size: 24px;
       }
     }
+
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>강포 계산기</h1>
+    <div class="title-container">
+      <img src="tower1.png" alt="아이콘">
+      <h1>손해막심 계산기</h1>
+    </div>
+
     <label>
-      강화 수치 (1~20):
+      강화 수치 (5~20):
       <input type="text" id="levelInput">
     </label>
 
@@ -128,13 +184,14 @@
     </label>
 
     <button onclick="showEnhancedLevel()">확인</button>
-  </div>
 
-  <div class="result-card">
-    <h2 id="enhancedLevel">-강</h2>
-    <div id="chart8PercentText" style="font-size:16px;color:#555;">0%</div>
-    <div class="progress-container">
-      <div id="progressBar" class="progress-bar"></div>
+    <div class="result">
+      <div id="enhancedLevel"></div>
+   <div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+  <div class="progress-text" id="progressText">0%</div>
+</div>
+
     </div>
   </div>
 
@@ -148,19 +205,18 @@ function showEnhancedLevel() {
   const level = parseInt(document.getElementById("levelInput").value, 10);
   const point = parseFloat(document.getElementById("pointInput").value);
 
-  if (isNaN(level) || level < 1 || level > 20 || isNaN(point) || point < 0) {
-    alert("강화 수치는 1~20, 포인트는 0 이상 입력해주세요.");
+  if (isNaN(level) || level < 5 || level > 20 || isNaN(point) || point < 0) {
+    alert("강화 수치는 5~20, 포인트는 0 이상 입력해주세요.");
     return;
   }
 
   const baseValue6 = chart[6][level - 1];
   const nextValue6 = chart[6][level] || baseValue6;
   const diff6 = nextValue6 - baseValue6;
-
   const consumedResource = baseValue6 + diff6 * (point / 100);
 
   let surpassedLevel = 0;
-  let defaultlv=0;
+  let defaultlv = 0;
   for (let idx = level - 1; idx >= 0; idx--) {
     if (consumedResource >= chart[8][idx]) {
       surpassedLevel = idx + 1;
@@ -170,17 +226,21 @@ function showEnhancedLevel() {
 
   if(level == 15){
     defaultlv = 14;
-  }else {
+  }else{
     defaultlv = level-2;
   }
 
   let chart8Value = chart[8][defaultlv];
   let chart8Percent = (consumedResource / chart8Value) * 100;
-  if(chart8Percent > 100) chart8Percent = chart8Percent-100;
+  if (chart8Percent >= 100) chart8Percent -= 100;
 
   document.getElementById("enhancedLevel").innerText = surpassedLevel + "강";
-  document.getElementById("chart8PercentText").innerText = chart8Percent.toFixed(2) + "%";
-  document.getElementById("progressBar").style.width = chart8Percent + "%";
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
+progressBar.style.width = Math.min(chart8Percent, 100) + "%";
+progressText.innerText = chart8Percent.toFixed(2) + "%";
+
 }
 </script>
 </body>
