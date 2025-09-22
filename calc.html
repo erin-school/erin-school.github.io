@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
@@ -21,23 +20,45 @@
 <body>
 <div class="card">
   <h2>강화 포인트 비교기 (예: 6등급 → 8등급)</h2>
-  <p class="muted">설명: 현재 등급과 레벨, 강화 포인트(%)를 입력하면 계산된 합계가 목표 등급에서 도달할 수 있는 레벨과 그 다음 레벨 진행도를 보여줍니다.</p><label>출발 등급</label> <select id="srcGrade"><option value="6">6등급</option><option value="8">8등급</option></select>
+  <p class="muted">설명: 현재 등급과 레벨, 강화 포인트(%)를 입력하면 계산된 합계가 목표 등급에서 도달할 수 있는 레벨과 그 다음 레벨 진행도를 보여줍니다.</p>
+  
+  <label>출발 등급</label>
+  <select id="srcGrade">
+    <option value="6">6등급</option>
+    <option value="8">8등급</option>
+  </select>
 
-<label>목표 등급</label> <select id="dstGrade"><option value="8" selected>8등급</option><option value="6">6등급</option></select>
+  <label>목표 등급</label>
+  <select id="dstGrade">
+    <option value="8" selected>8등급</option>
+    <option value="6">6등급</option>
+  </select>
 
-<label>현재 강화 수치 레벨 (1-20)</label> <input type="number" id="level" value="15" min="1" max="20" />
+  <label>현재 강화 수치 레벨 (1-20)</label>
+  <input type="number" id="level" value="15" min="1" max="20" />
 
-<label>현재 강화 포인트 (%) - 0~100</label> <input type="number" id="percent" step="0.1" value="68.3" min="0" max="100" />
+  <label>현재 강화 포인트 (%) - 0~100</label>
+  <input type="number" id="percent" step="0.1" value="68.3" min="0" max="100" />
 
   <div>
     <button id="calc">계산하기</button>
     <button id="example">예시 채우기 (6등급 15강 68.3%)</button>
-  </div>  <div class="result" id="out" aria-live="polite">결과가 여기에 표시됩니다.</div>  <h3>저장된 강화 차트 (참고)</h3>
+  </div>
+  
+  <div class="result" id="out" aria-live="polite">결과가 여기에 표시됩니다.</div>
+  
+  <h3>저장된 강화 차트 (참고)</h3>
   <table>
     <thead><tr><th>강화 수치</th><th>6등급</th><th>8등급</th></tr></thead>
     <tbody id="chart"></tbody>
   </table>
-</div><script>
+
+  <h3>강화 수치 비교 그래프</h3>
+  <canvas id="diffChart" width="800" height="400"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
 const chart = {
  6: [75,182,323,512,765,1107,1560,2166,2976,4091,6318,9928,17928,34848,75081,212581,453281,762681,1175181,2000281],
  8: [169,410,727,1152,1721,2491,3510,4874,6696,9205,14216,22338,40338,78408,168932,478307,1019882,1716032,2644157,4500632]
@@ -65,13 +86,11 @@ function compute(srcGrade,dstGrade,level,pct){
   const addFloat=increment*(pct/100);
   const total=base+addFloat;
 
-  // 목표 등급에서 이미 달성한 레벨 찾기
   let achievedLevel=0;
   for(let i=1;i<=20;i++){
     if(total>=dst[i]){achievedLevel=i;} else {break;}
   }
 
-  // 다음 레벨 진행도 계산
   const nextLevelForProgress=Math.min(achievedLevel+1,20);
   const nextLevelVal=dst[nextLevelForProgress];
   const progress=Math.max(0,Math.min(100,(total-dst[achievedLevel])/(nextLevelVal-dst[achievedLevel])*100));
@@ -98,6 +117,7 @@ function render(){
   out.innerHTML=html;
 }
 
+// 버튼 이벤트
 document.getElementById('calc').addEventListener('click',render);
 document.getElementById('example').addEventListener('click',()=>{
   document.getElementById('srcGrade').value='6';
@@ -107,5 +127,62 @@ document.getElementById('example').addEventListener('click',()=>{
   render();
 });
 render();
-</script></body>
+
+// ===== 그래프 생성 =====
+const ctx = document.getElementById('diffChart').getContext('2d');
+const levels = Array.from({length: 20}, (_, i) => i + 1);
+const diffData = levels.map(i => chart[8][i-1] - chart[6][i-1]);
+
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: levels.map(l => l + "강"),
+    datasets: [
+      {
+        label: '6등급',
+        data: chart[6],
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+        fill: false,
+        tension: 0.2
+      },
+      {
+        label: '8등급',
+        data: chart[8],
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0.1)',
+        fill: false,
+        tension: 0.2
+      },
+      {
+        label: '차이 (8등급 - 6등급)',
+        data: diffData,
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderDash: [5, 5],
+        fill: false,
+        tension: 0.2
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      title: {
+        display: true,
+        text: '6등급 vs 8등급 강화 수치 비교'
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: val => val.toLocaleString()
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
 </html>
