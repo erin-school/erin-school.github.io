@@ -1,1 +1,111 @@
+<!doctype html>
 
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>강화 포인트 비교기 (6등급 → 8등급)</title>
+<style>
+  body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif;margin:20px;background:#f7f7fb}
+  .card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(20,20,60,0.06);max-width:880px;margin:0 auto}
+  label{display:block;margin-top:10px;font-weight:600}
+  input,select{padding:8px 10px;margin-top:6px;border-radius:8px;border:1px solid #ddd;width:160px}
+  button{margin-top:12px;padding:8px 14px;border-radius:10px;border:0;background:#2f6bf6;color:#fff;cursor:pointer}
+  .result{margin-top:18px;padding:12px;border-radius:8px;background:#fbfbff;border:1px solid #eef}
+  table{width:100%;border-collapse:collapse;margin-top:12px}
+  th,td{padding:6px 8px;border:1px solid #eee;text-align:right}
+  th{background:#fafafa}
+  .muted{color:#666;font-size:13px}
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>강화 포인트 비교기 (예: 6등급 → 8등급)</h2>
+  <p class="muted">설명: 현재 등급과 레벨, 강화 포인트(%)를 입력하면 계산된 합계가 목표 등급에서 도달할 수 있는 레벨과 그 다음 레벨 진행도를 보여줍니다.</p><label>출발 등급</label> <select id="srcGrade"><option value="6">6등급</option><option value="8">8등급</option></select>
+
+<label>목표 등급</label> <select id="dstGrade"><option value="8" selected>8등급</option><option value="6">6등급</option></select>
+
+<label>현재 강화 수치 레벨 (1-20)</label> <input type="number" id="level" value="15" min="1" max="20" />
+
+<label>현재 강화 포인트 (%) - 0~100</label> <input type="number" id="percent" step="0.1" value="68.3" min="0" max="100" />
+
+  <div>
+    <button id="calc">계산하기</button>
+    <button id="example">예시 채우기 (6등급 15강 68.3%)</button>
+  </div>  <div class="result" id="out" aria-live="polite">결과가 여기에 표시됩니다.</div>  <h3>저장된 강화 차트 (참고)</h3>
+  <table>
+    <thead><tr><th>강화 수치</th><th>6등급</th><th>8등급</th></tr></thead>
+    <tbody id="chart"></tbody>
+  </table>
+</div><script>
+const chart = {
+ 6: [75,182,323,512,765,1107,1560,2166,2976,4091,6318,9928,17928,34848,75081,212581,453281,762681,1175181,2000281],
+ 8: [169,410,727,1152,1721,2491,3510,4874,6696,9205,14216,22338,40338,78408,168932,478307,1019882,1716032,2644157,4500632]
+};
+function arrToMap(a){const m={};for(let i=0;i<a.length;i++)m[i+1]=a[i];return m}
+const map6=arrToMap(chart[6]);
+const map8=arrToMap(chart[8]);
+
+const tbody=document.getElementById('chart');
+for(let i=1;i<=20;i++){
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td style="text-align:center">${i}</td><td>${map6[i].toLocaleString()}</td><td>${map8[i].toLocaleString()}</td>`;
+  tbody.appendChild(tr);
+}
+
+function compute(srcGrade,dstGrade,level,pct){
+  const src = srcGrade==6?map6:map8;
+  const dst = dstGrade==6?map6:map8;
+  level=Math.max(1,Math.min(20,Math.floor(level)));
+  const nextLevel=Math.min(20,level+1);
+
+  const base=src[level];
+  const nextVal=src[nextLevel];
+  const increment=Math.max(0,nextVal-base);
+  const addFloat=increment*(pct/100);
+  const total=base+addFloat;
+
+  // 목표 등급에서 이미 달성한 레벨 찾기
+  let achievedLevel=0;
+  for(let i=1;i<=20;i++){
+    if(total>=dst[i]){achievedLevel=i;} else {break;}
+  }
+
+  // 다음 레벨 진행도 계산
+  const nextLevelForProgress=Math.min(achievedLevel+1,20);
+  const nextLevelVal=dst[nextLevelForProgress];
+  const progress=Math.max(0,Math.min(100,(total-dst[achievedLevel])/(nextLevelVal-dst[achievedLevel])*100));
+
+  return {base,add:Math.round(addFloat),total:Math.round(total),achievedLevel,nextLevelForProgress,nextLevelVal,progress};
+}
+
+function render(){
+  const srcGrade=parseInt(document.getElementById('srcGrade').value,10);
+  const dstGrade=parseInt(document.getElementById('dstGrade').value,10);
+  const level=Number(document.getElementById('level').value);
+  const pct=Number(document.getElementById('percent').value);
+  const out=document.getElementById('out');
+  const r=compute(srcGrade,dstGrade,level,pct);
+
+  let html='';
+  html+=`<strong>계산식</strong><br>`;
+  html+=`기본값 (출발등급 ${srcGrade}등급 ${level}강): ${r.base.toLocaleString()}<br>`;
+  html+=`더할값: ${r.add.toLocaleString()}<br>`;
+  html+=`<strong>합계:</strong> ${r.total.toLocaleString()}<br><br>`;
+  html+=`목표 ${dstGrade}등급에서 이미 달성한 레벨: <strong>${r.achievedLevel}강</strong><br>`;
+  html+=`다음 레벨 진행도 (${r.nextLevelForProgress}강 기준): <strong>${r.progress.toFixed(1)}%</strong>`;
+
+  out.innerHTML=html;
+}
+
+document.getElementById('calc').addEventListener('click',render);
+document.getElementById('example').addEventListener('click',()=>{
+  document.getElementById('srcGrade').value='6';
+  document.getElementById('dstGrade').value='8';
+  document.getElementById('level').value='15';
+  document.getElementById('percent').value='68.3';
+  render();
+});
+render();
+</script></body>
+</html>
