@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <title>9월 25일 새시즌 시작</title>
+  <title>강화 비교</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -173,10 +173,9 @@ input, select, button {
 <body>
   <div class="card">
     <div class="title-container">
-      <img src="tower3.png" alt="아이콘">
-      <h1>강포 전환 계산기</h1>
+      <img src="tower1.png" alt="아이콘">
+      <h1>손해막심 계산기</h1>
     </div>
-
     <label>
       강화 수치 (5~20):
       <input type="text" id="levelInput">
@@ -195,7 +194,6 @@ input, select, button {
   <div class="progress-bar" id="progressBar"></div>
   <div class="progress-text" id="progressText">0%</div>
 </div>
-
     </div>
   </div>
 
@@ -228,10 +226,11 @@ function showEnhancedLevel() {
     }
   }
 
-
-
-defaultlv = level-2;
-
+  if(level == 15){
+    defaultlv =level-1;
+  }else{
+    defaultlv = level-2;
+  }
 
   let chart8Value = chart[8][defaultlv];
   let chart8Percent = (consumedResource / chart8Value) * 100;
