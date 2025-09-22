@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
-<title>강포 전환 계산기</title>
+<title>강포 계산기</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/png" href="tower3.png">
 <style>
@@ -25,7 +25,7 @@ button {
 }
 button:hover { background: #2551c9; }
 .stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-.stat{background:#fff;padding:10px;border-radius:8px;border:1px solid #e6eefc;min-width:140px;text-align:center}
+.stat{background:#fff;padding:10px;border-radius:8px;border:1px solid #e6eefc;text-align:center;flex:1 1 100%;box-sizing:border-box}
 .percentBig{font-weight:800;font-size:20px;color:#2f6bf6}
 .debugSmall{font-size:12px;color:#555;margin-top:8px}
 .title-container { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:20px; }
@@ -55,11 +55,12 @@ button:hover { background: #2551c9; }
   <div style="margin-top:12px">
     <strong>추가</strong>
     <div class="debugSmall" id="explain">
-     다음 강화 횟수를 추가 했습니다.
+      남은 포인트별 필요 강화 횟수와 기대값 차트를 포함했습니다.
     </div>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 const chart = {
  6: [75,182,323,512,765,1107,1560,2166,2976,4091,6318,9928,17928,34848,75081,212581,453281,762681,1175181,2000281],
@@ -97,10 +98,7 @@ function compute(level, point){
   let absolutePercent = (nextValue > 0) ? (consumed / nextValue) * 100 : 0;
   let displayPercent = relativePercent;
 
-  const prevBreakPointPct = (diff6 !== 0) ? ((prevValue - base6) / diff6) * 100 : NaN;
-  const nextBreakPointPct = (diff6 !== 0) ? ((nextValue - base6) / diff6) * 100 : NaN;
-
-  return {level, point, base6, next6, diff6, consumed, surpassedLevel, prevIndex8, prevValue, nextValue, relativePercent, absolutePercent, displayPercent, prevBreakPointPct, nextBreakPointPct};
+  return {level, point, base6, next6, diff6, consumed, surpassedLevel, prevValue, nextValue, displayPercent};
 }
 
 function formatNum(n,d=2){ return isFinite(n)?n.toFixed(d):String(n); }
@@ -119,22 +117,43 @@ function renderResult(obj){
   pushStat('예상 수치', `<div class="percentBig">${obj.surpassedLevel}강</div>`);
   pushStat('표시 퍼센트', `<div class="percentBig">${formatNum(clamp(obj.displayPercent,0,100),2)}%</div>`);
 
-// 다음 강화 기대값 계산 (단순화)
-const nextLevel = obj.surpassedLevel+1;
-const successRatePct = enhanceRateTable[nextLevel] !== undefined ? enhanceRateTable[nextLevel] : 1; // %
-const successRate = successRatePct / 100; // 0~1
-const failPoint = successRate / 2;        // 실패 시 적립 (0~1 단위)
+  const nextLevel = obj.surpassedLevel;
+  const successRatePct = enhanceRateTable[nextLevel] !== undefined ? enhanceRateTable[nextLevel] : 1; 
+  const successRate = successRatePct / 100; 
+  const failPoint = successRate / 2; 
 
-const expectVal = successRate + failPoint;            // 1회당 기대값
-const remainPercent = 100 - obj.displayPercent;      // 남은 퍼센트
+  const remainPercent = 100 - obj.displayPercent; 
+  const expectVal = (successRate * remainPercent) + ((1 - successRate) * (failPoint * 100)); 
 
-// 평균 시도 = 남은 퍼센트 ÷ 1회 기대값
-const avgTries = Math.ceil(remainPercent / (expectVal * 100)); // 소수점 제거
+  const avgTries = Math.ceil(remainPercent / expectVal);
 
-pushStat('다음 강화 기대횟수', `${avgTries}회`);
-pushStat('1회당 기대값', `${formatNum(expectVal*100,2)}%`);
+  pushStat('다음 강화 기대횟수', `${avgTries}회`);
+  pushStat('1회당 기대값', `${formatNum(expectVal,2)}%`);
 
-  
+  // 기대값 변화 차트
+  const chartDiv = document.createElement('div');
+  chartDiv.className = 'stat';
+  chartDiv.style.width = '100%';
+  chartDiv.innerHTML = `
+    <div style="font-size:12px;color:#666">기대값 변화</div>
+    <canvas id="expectChart" height="150"></canvas>
+  `;
+  statsRow.appendChild(chartDiv);
+
+  // Chart.js 동적 생성
+  if(window.expectChartInstance) window.expectChartInstance.destroy();
+  const remainVals=[], expectVals=[];
+  for(let r=obj.displayPercent; r<=100; r+=1){
+    let eDelta = (successRate*(100-r)) + ((1-successRate)*failPoint*100);
+    remainVals.push(r.toFixed(1)+'%');
+    expectVals.push(parseFloat(eDelta.toFixed(2)));
+  }
+  const ctx = document.getElementById('expectChart').getContext('2d');
+  window.expectChartInstance = new Chart(ctx,{
+    type:'line',
+    data:{labels:remainVals,datasets:[{label:'1회당 기대값(%)',data:expectVals,borderColor:'#2f6bf6',backgroundColor:'rgba(47,107,246,0.2)',fill:true,tension:0.2}]},
+    options:{responsive:true,scales:{x:{title:{display:true,text:'표시 퍼센트(%)'}},y:{title:{display:true,text:'기대값(%)'},beginAtZero:true}},plugins:{legend:{display:false}}}
+  });
 
   document.getElementById('explain').innerText = '실제 누적 포인트 기준 평균 시도 계산 적용';
 }
