@@ -15,11 +15,34 @@
   .stat{background:#fff;padding:10px;border-radius:8px;border:1px solid #e6eefc;min-width:140px;text-align:center}
   .percentBig{font-weight:800;font-size:20px;color:#2f6bf6}
   .debugSmall{font-size:12px;color:#555;margin-top:8px}
+  /* 상단 타이틀 + 이미지 */
+.title-container {
+  display: flex;
+  align-items: center;   /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  gap: 10px;             /* 이미지와 제목 사이 간격 */
+  margin-bottom: 20px;   /* 카드 내용과 간격 */
+}
+
+.title-container h1 {
+  font-size: 26px;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.title-container img {
+  width: 32px;
+  height: 32px;
+}
+
 </style>
 </head>
 <body>
   <div class="card">
-    <h1>강화 자동 퍼센트 계산기 (6→8)</h1>
+    <div class="title-container">
+    <img src="tower3.png" alt="아이콘">
+     <h1>강포 전환 계산기</h1>
+    </div>
 
     <label>강화 수치 (5~20)
       <input id="levelInput" type="number" min="5" max="20" value="15">
@@ -38,11 +61,10 @@
     <div class="stats" id="statsRow"></div>
 
     <div style="margin-top:12px">
-      <strong>설명</strong>
-      <div class="debugSmall" id="explain">계산 버튼을 눌러 결과와 디버그 값을 확인하세요.</div>
+      <strong>주의</strong>
+      <div class="debugSmall" id="explain">현재 시스템을 기준으로 작성한 문서로 실제 업데이트 시 차이가 있일 수 있습니다.</div>
     </div>
 
-    <pre id="debugBox" style="margin-top:10px;display:none"></pre>
   </div>
 
 <script>
