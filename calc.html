@@ -10,8 +10,27 @@
   h1{margin:0 0 8px;font-size:20px}
   label{display:block;margin-top:12px;font-weight:600;color:#222}
   input{width:100%;padding:8px 10px;margin-top:6px;border-radius:8px;border:1px solid #ddd;box-sizing:border-box}
-  button{margin-top:12px;padding:10px 12px;border-radius:10px;border:0;background:#2f6bf6;color:#fff;cursor:pointer}
-  .stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+ input, button {
+  width: 100%;           /* 카드 폭에 맞춤 */
+  box-sizing: border-box; /* padding 포함 폭 계산 */
+}
+
+button {
+  margin-top: 18px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 0;
+  background: #2f6bf6;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s background;
+}
+
+button:hover {
+  background: #2551c9;
+}
+ .stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
   .stat{background:#fff;padding:10px;border-radius:8px;border:1px solid #e6eefc;min-width:140px;text-align:center}
   .percentBig{font-weight:800;font-size:20px;color:#2f6bf6}
   .debugSmall{font-size:12px;color:#555;margin-top:8px}
@@ -52,11 +71,7 @@
       <input id="pointInput" type="number" min="0" max="100" step="0.01" value="37.5">
     </label>
 
-    <div style="display:flex;gap:8px">
       <button id="calcBtn">계산</button>
-      <button id="testBtn">테스트: level=15, point=37.5</button>
-      <button id="clearBtn" style="background:#999">비우기</button>
-    </div>
 
     <div class="stats" id="statsRow"></div>
 
