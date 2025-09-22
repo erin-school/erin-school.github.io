@@ -4,18 +4,14 @@
 <meta charset="utf-8" />
 <title>강포 전환 계산기</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="icon" type="image/png" href="tower3.png">
+<link rel="icon" type="image/png" href="tower3.png">
 <style>
-  body{font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR',sans-serif;background:#f7f7fb;margin:20px}
-  .card{max-width:900px;margin:0 auto;background:#fff;padding:22px;border-radius:12px;box-shadow:0 10px 30px rgba(20,20,60,0.06)}
-  h1{margin:0 0 8px;font-size:20px}
-  label{display:block;margin-top:12px;font-weight:600;color:#222}
-  input{width:100%;padding:8px 10px;margin-top:6px;border-radius:8px;border:1px solid #ddd;box-sizing:border-box}
- input, button {
-  width: 100%;           /* 카드 폭에 맞춤 */
-  box-sizing: border-box; /* padding 포함 폭 계산 */
-}
-
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif;background:#f7f7fb;margin:20px}
+.card{max-width:900px;margin:0 auto;background:#fff;padding:22px;border-radius:12px;box-shadow:0 10px 30px rgba(20,20,60,0.06)}
+h1{margin:0 0 8px;font-size:20px}
+label{display:block;margin-top:12px;font-weight:600;color:#222}
+input{width:100%;padding:8px 10px;margin-top:6px;border-radius:8px;border:1px solid #ddd;box-sizing:border-box}
+input, button {width: 100%; box-sizing: border-box;}
 button {
   margin-top: 18px;
   padding: 10px 12px;
@@ -27,69 +23,51 @@ button {
   cursor: pointer;
   transition: 0.2s background;
 }
-
-button:hover {
-  background: #2551c9;
-}
- .stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-  .stat{background:#fff;padding:10px;border-radius:8px;border:1px solid #e6eefc;min-width:140px;text-align:center}
-  .percentBig{font-weight:800;font-size:20px;color:#2f6bf6}
-  .debugSmall{font-size:12px;color:#555;margin-top:8px}
-  /* 상단 타이틀 + 이미지 */
-.title-container {
-  display: flex;
-  align-items: center;   /* 세로 중앙 정렬 */
-  justify-content: center; /* 가로 중앙 정렬 */
-  gap: 10px;             /* 이미지와 제목 사이 간격 */
-  margin-bottom: 20px;   /* 카드 내용과 간격 */
-}
-
-.title-container h1 {
-  font-size: 26px;
-  margin: 0;
-  color: #1a1a1a;
-}
-
-.title-container img {
-  width: 32px;
-  height: 32px;
-}
-
+button:hover { background: #2551c9; }
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.stat{background:#fff;padding:10px;border-radius:8px;border:1px solid #e6eefc;min-width:140px;text-align:center}
+.percentBig{font-weight:800;font-size:20px;color:#2f6bf6}
+.debugSmall{font-size:12px;color:#555;margin-top:8px}
+.title-container { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:20px; }
+.title-container h1 { font-size:26px; margin:0; color:#1a1a1a; }
+.title-container img { width:32px; height:32px; }
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="title-container">
+<div class="card">
+  <div class="title-container">
     <img src="tower3.png" alt="아이콘">
-     <h1>★6 → ★8 강포 계산기</h1>
-    </div>
-
-    <label>강화 수치 (5~20)
-      <input id="levelInput" type="number" min="5" max="20" value="15">
-    </label>
-
-    <label>강화 포인트 (0~100)
-      <input id="pointInput" type="number" min="0" max="100" step="0.01" value="37.5">
-    </label>
-
-      <button id="calcBtn">계산</button>
-
-    <div class="stats" id="statsRow"></div>
-
-    <div style="margin-top:12px">
-      <strong>추가</strong>
-      <div class="debugSmall" id="explain">
-예시 값 기준으로 8등급 전환 시 14강 53.28%가 되고 강화 시도 시 성공 확률: 3%, 실패 확률: 97%이며 실패 시 1.5%가 포인트로 적립됩니다.<br>
-기대 값에 따라 1트 당 약 4.45의 포인트 증가를 기대할 수 있으며 즉 3%인 경우 10.5회 시도 시 15강을 띄울 가능성이 높습니다.<br>
-  반대로 15강에서 68.4를 맞추기 위해서는 기대 값은 1회 당 1.49로 약 21회의 시도가 필요합니다.<p>절대 임계값이 100%가 되도록 각 확률의 실패 포인트를 계산해보면 대략적인 기대횟수를 구할 수 있습니다.
-    </div>
-
+    <h1>★6 → ★8 강포 전환률</h1>
   </div>
+
+  <label>강화 수치 (5~20)
+    <input id="levelInput" type="number" min="5" max="20" value="15">
+  </label>
+
+  <label>강화 포인트 (0~100)
+    <input id="pointInput" type="number" min="0" max="100" step="0.01" value="37.5">
+  </label>
+
+  <button id="calcBtn">계산</button>
+
+  <div class="stats" id="statsRow"></div>
+
+  <div style="margin-top:12px">
+    <strong>추가</strong>
+    <div class="debugSmall" id="explain">
+      구간 내부/초과 상태를 기준으로 displayPercent를 안정적으로 계산합니다.
+    </div>
+  </div>
+</div>
 
 <script>
 const chart = {
-  6: [75,182,323,512,765,1107,1560,2166,2976,4091,6318,9928,17928,34848,75081,212581,453281,762681,1175181,2000281],
-  8: [169,410,727,1152,1721,2491,3510,4874,6696,9205,14216,22338,40338,78408,168932,478307,1019882,1716032,2644157,4500632]
+ 6: [75,182,323,512,765,1107,1560,2166,2976,4091,6318,9928,17928,34848,75081,212581,453281,762681,1175181,2000281],
+ 8: [169,410,727,1152,1721,2491,3510,4874,6696,9205,14216,22338,40338,78408,168932,478307,1019882,1716032,2644157,4500632]
+};
+
+const enhanceRateTable = {
+ 5:80,6:70,7:60,8:50,9:40,10:30,11:15,12:10,13:7,14:5,15:3
 };
 
 function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
@@ -115,37 +93,23 @@ function compute(level, point){
   let prevValue = (surpassedLevel === 0) ? 0 : chart[8][prevIndex8];
   let nextValue = (surpassedLevel < chart[8].length) ? chart[8][surpassedLevel] : chart[8][chart[8].length-1];
 
-  // 상대 / 절대 퍼센트 계산
   let relativePercent = (nextValue > prevValue) ? ((consumed - prevValue) / (nextValue - prevValue)) * 100 : (consumed >= prevValue ? 100:0);
   let absolutePercent = (nextValue > 0) ? (consumed / nextValue) * 100 : 0;
-
-  // ✅ 안정화된 displayPercent
-let displayPercent = relativePercent;
-
+  let displayPercent = relativePercent;
 
   const prevBreakPointPct = (diff6 !== 0) ? ((prevValue - base6) / diff6) * 100 : NaN;
   const nextBreakPointPct = (diff6 !== 0) ? ((nextValue - base6) / diff6) * 100 : NaN;
 
-  return {
-    level, point,
-    base6, next6, diff6, consumed,
-    surpassedLevel, prevIndex8, prevValue, nextValue,
-    relativePercent, absolutePercent, displayPercent,
-    prevBreakPointPct, nextBreakPointPct
-  };
+  return {level, point, base6, next6, diff6, consumed, surpassedLevel, prevIndex8, prevValue, nextValue, relativePercent, absolutePercent, displayPercent, prevBreakPointPct, nextBreakPointPct};
 }
 
-function formatNum(n, digits=2){
-  if (!isFinite(n)) return String(n);
-  if (Math.abs(n) >= 1000000) return Math.round(n).toLocaleString();
-  return n.toFixed(digits);
-}
+function formatNum(n,d=2){ return isFinite(n)?n.toFixed(d):String(n); }
 
 function renderResult(obj){
   const statsRow = document.getElementById('statsRow');
   statsRow.innerHTML = '';
 
-  function pushStat(title, valHtml){
+  function pushStat(title,valHtml){
     const d = document.createElement('div');
     d.className = 'stat';
     d.innerHTML = `<div style="font-size:12px;color:#666">${title}</div><div style="margin-top:6px">${valHtml}</div>`;
@@ -154,42 +118,39 @@ function renderResult(obj){
 
   pushStat('예상 수치', `<div class="percentBig">${obj.surpassedLevel}강</div>`);
   pushStat('표시 퍼센트', `<div class="percentBig">${formatNum(clamp(obj.displayPercent,0,100),2)}%</div>`);
-  pushStat('내부 진행률', `${formatNum(obj.relativePercent,2)}%`);
-  pushStat('절대 임계값', `${formatNum(obj.absolutePercent,2)}%`);
 
-  const dbg = document.getElementById('debugBox');
-  dbg.style.display='block';
-  dbg.textContent =
-`입력: level=${obj.level}, point=${obj.point}
-consumedResource = ${formatNum(obj.consumed,4)}
+  // === 다음 강화 기대값 계산 (실제 누적 포인트 기준) ===
+  const nextLevel = obj.surpassedLevel + 1;
+  const successRatePct = enhanceRateTable[nextLevel] !== undefined ? enhanceRateTable[nextLevel] : 1; // %
+  const successRate = successRatePct / 100;  // 0~1
+  const failPoint = successRate / 2;          // 실패 시 적립 포인트
+  const remainPct = (100 - obj.point) / 100; // 0~1 단위
 
-prev (8등급) = ${obj.prevValue}
-next (8등급) = ${obj.nextValue}
 
-relativePercent = ${formatNum(obj.relativePercent,6)}%
-absolutePercent = ${formatNum(obj.absolutePercent,6)}%
 
-displayPercent = ${formatNum(obj.displayPercent,6)}%   <-- 안정화 계산
-구간 전환 포인트: prevBreakPointPct=${formatNum(obj.prevBreakPointPct,6)}%, nextBreakPointPct=${formatNum(obj.nextBreakPointPct,6)}%`;
-  document.getElementById('explain').innerText = '구간 내부/초과 상태를 기준으로 displayPercent를 안정적으로 계산합니다.';
+// 평균 시도 계산: 100% 누적 기준
+let avgTries = 0;
+let tempRemain = remainPct;
+while (tempRemain > 0) {
+  tempRemain -= successRate + failPoint;
+  avgTries += 1;
+}
+
+// 1회당 기대값을 퍼센트 단위로 보기 좋게
+const expectValPercent = (successRate + failPoint) * 100;
+
+pushStat('다음 강화 기대횟수', `${Math.round(avgTries)}회`);
+pushStat('1회당 기대값', `${formatNum(expectValPercent,2)}%`);
+
+  
+
+  document.getElementById('explain').innerText = '실제 누적 포인트 기준 평균 시도 계산 적용';
 }
 
 document.getElementById('calcBtn').addEventListener('click', ()=>{
   const level = Number(document.getElementById('levelInput').value);
   const point = Number(document.getElementById('pointInput').value);
   renderResult(compute(level, point));
-});
-
-document.getElementById('testBtn').addEventListener('click', ()=>{
-  document.getElementById('levelInput').value = 15;
-  document.getElementById('pointInput').value = 37.5;
-  document.getElementById('calcBtn').click();
-});
-
-document.getElementById('clearBtn').addEventListener('click', ()=>{
-  document.getElementById('debugBox').style.display='none';
-  document.getElementById('statsRow').innerHTML='';
-  document.getElementById('explain').innerText = '계산이 초기화되었습니다.';
 });
 </script>
 </body>
