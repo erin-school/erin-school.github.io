@@ -53,9 +53,9 @@ button:hover { background: #2551c9; }
   <div class="stats" id="statsRow"></div>
 
   <div style="margin-top:12px">
-    <strong>추가</strong>
+    <strong>업데이트</strong>
     <div class="debugSmall" id="explain">
-      남은 포인트별 필요 강화 횟수와 기대값 차트를 포함했습니다.
+      표시 퍼센트의 값을 게임과 동일하게 변경했습니다.
     </div>
   </div>
 </div>
@@ -159,7 +159,7 @@ function renderResult(obj){
     options:{responsive:true,scales:{x:{title:{display:true,text:'표시 퍼센트(%)'}},y:{title:{display:true,text:'기대값(%)'},beginAtZero:true}},plugins:{legend:{display:false}}}
   });
 
-  document.getElementById('explain').innerText = '실제 누적 포인트 기준 평균 시도 계산 적용';
+  
 }
 
 document.getElementById('calcBtn').addEventListener('click', ()=>{
