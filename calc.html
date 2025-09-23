@@ -53,9 +53,9 @@ button:hover { background: #2551c9; }
   <div class="stats" id="statsRow"></div>
 
   <div style="margin-top:12px">
-    <strong>추가</strong>
+    <strong>업데이트</strong>
     <div class="debugSmall" id="explain">
-      남은 포인트별 필요 강화 횟수와 기대값 차트를 포함했습니다.
+      표시 퍼센트를 게임과 같이 소수점 버림 처리했습니다.
     </div>
   </div>
 </div>
@@ -103,6 +103,10 @@ function compute(level, point){
 
 function formatNum(n,d=2){ return isFinite(n)?n.toFixed(d):String(n); }
 
+function floorNum(n, d=2) {
+  const factor = Math.pow(10, d);
+  return Math.floor(n * factor) / factor;
+}
 function renderResult(obj){
   const statsRow = document.getElementById('statsRow');
   statsRow.innerHTML = '';
@@ -115,10 +119,10 @@ function renderResult(obj){
   }
 
   pushStat('예상 수치', `<div class="percentBig">${obj.surpassedLevel}강</div>`);
-  pushStat('표시 퍼센트', `<div class="percentBig">${formatNum(clamp(obj.displayPercent,0,100),2)}%</div>`);
+  pushStat('표시 퍼센트', `<div class="percentBig">${Math.floor(clamp(obj.displayPercent,0,100))}%</div>`);
 
   const nextLevel = obj.surpassedLevel;
-  const successRatePct = enhanceRateTable[nextLevel] !== undefined ? enhanceRateTable[nextLevel] : 1; 
+  const successRatePct = enhanceRateTable[nextLevel] !== undefined ? enhanceRateTabl:e[nextLevel] : 1; 
   const successRate = successRatePct / 100; 
   const failPoint = successRate / 2; 
 
